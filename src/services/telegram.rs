@@ -124,6 +124,8 @@ impl TelegramService {
 }
 impl Drop for TelegramService {
     fn drop(&mut self) {
-        self.stop_sender.send(()).unwrap();
+        if let Err(e)=self.stop_sender.send(()){
+            print!("{}",e)
+        }
     }
 }

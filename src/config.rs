@@ -1,6 +1,6 @@
-use std::{collections::HashMap, io::Error};
-
 use serde::{Deserialize, Serialize};
+use sqlx::postgres;
+use std::{collections::HashMap, hash::Hash, io::Error};
 
 use crate::services::{
     email::EmailService,
@@ -10,35 +10,44 @@ use crate::services::{
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct ConfigFile {
     services: HashMap<String, String>,
+    connection_string: String,
 }
+#[derive(Clone)]
 pub struct Config {
+    pub pool: postgres::PgPool,
     pub telegram: Option<TelegramService>,
     pub email: Option<EmailService>,
-    services: HashMap<String, Box<dyn Service>>,
+    // pub services: HashMap<String, Box<dyn Service>>,
 }
 
 impl ConfigFile {
-    pub fn toConfig(self) -> Config {
+    pub async fn to_config(self) -> Config {
+        let pool = postgres::PgPoolOptions::new()
+            .connect(self.connection_string.as_str())
+            .await
+            .unwrap();
+        sqlx::migrate!().run(&pool).await.unwrap();
         let mut config = Config {
+            pool,
             telegram: None,
             email: None,
-            services: HashMap::new(),
+            //services: HashMap::new(),
         };
-        for (serviceName, configData) in self.services {
-            match serviceName.as_str() {
+        for (service_name, config_data) in self.services {
+            match service_name.as_str() {
                 telegram::TelegramService::ID => {
-                    let service = TelegramService::load(configData);
-                    config.telegram = Some(service.clone());
-                    config
-                        .services
-                        .insert(telegram::TelegramService::ID.to_string(), Box::new(service));
+                    let service = TelegramService::load(config_data);
+                    config.telegram = Some(service);
+                    // config
+                    //     .services
+                    //     .insert(telegram::TelegramService::ID.to_string(), Box::new(service));
                 }
                 EmailService::ID => {
-                    let service = EmailService::load(configData);
-                    config.email = Some(service.clone());
-                    config
-                        .services
-                        .insert(EmailService::ID.to_string(), Box::new(service));
+                    let service = EmailService::load(config_data);
+                    config.email = Some(service);
+                    // config
+                    //     .services
+                    //     .insert(EmailService::ID.to_string(), Box::new(service));
                 }
                 _ => {}
             }
@@ -52,3 +61,39 @@ impl ConfigFile {
         }
     }
 }
+impl Config {
+    pub fn get_service(&self, service_id: String) -> Option<&(dyn Service+Sync)> {
+        match service_id.as_str() {
+            telegram::TelegramService::ID => {
+                if let Some(service) = &self.telegram {
+                    return Some(service)
+                } 
+            },
+            EmailService::ID => {
+                if let Some(service) = &self.email {
+                    return Some(service)
+                } 
+            },
+            _ => return None,
+        }
+        return None;
+    }
+}
+
+// impl Clone for Config {
+//     fn clone(&self) -> Self {
+//         let mut servicesClone:HashMap<String, Box<dyn Service>>= HashMap::new();
+//         if let Some(telegram) = &self.telegram {
+//             servicesClone.insert(telegram::TelegramService::ID.to_string(), Box::new(telegram.clone()));
+//         }
+//         if let Some(email) = &self.email {
+//             servicesClone.insert(EmailService::ID.to_string(), Box::new(email.clone()));
+//         }
+//         Config {
+//             pool: self.pool.clone(),
+//             telegram: self.telegram.clone(),
+//             email: self.email.clone(),
+//             services: servicesClone,
+//         }
+//     }
+// }

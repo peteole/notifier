@@ -1,22 +1,13 @@
-mod services;
-mod server;
 mod config;
-use services::{service::*, telegram::TelegramService};
+mod server;
+mod services;
 #[tokio::main]
 async fn main() {
-    let config=config::ConfigFile::load("config.yaml").unwrap();
-    let config=config.toConfig();
-    //println!("{:?}", config);
-    let telegram_service = config.telegram.unwrap();
-    let chat_id = telegram_service
-        .get_chat_id("peteole".to_string())
+    let config = config::ConfigFile::load("config.yaml").unwrap();
+    let config = config.to_config().await;
+    let app = server::create_router(config);
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
         .await
         .unwrap();
-    telegram_service
-        .send(
-            chat_id.to_string(),
-            "test".to_string(),
-            "Hello world form rust!".to_string(),
-        )
-        .await;
 }
