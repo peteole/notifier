@@ -1,4 +1,9 @@
-use std::{collections::HashMap, time};
+use std::{
+    cell::RefCell,
+    collections::HashMap,
+    sync::{Arc, Mutex},
+    time,
+};
 
 use super::service;
 use async_trait::async_trait;
@@ -12,12 +17,10 @@ use tokio::{
         mpsc,
     },
 };
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct TelegramService {
     bot: AutoSend<Bot>,
-    request_sender: Sender<(String, mpsc::Sender<ChatId>)>,
-    stop_request_sender: Sender<String>,
-    stop_sender: Sender<()>,
+    username_lookup_service: Arc<UsernameLookupService>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -39,73 +42,74 @@ impl service::Service for TelegramService {
 }
 
 impl TelegramService {
-    pub async fn get_chat_id(&self, username: String) -> Result<ChatId, String> {
-        //let (tx, rx) = mpsc::channel(10);
-        let (sender, mut receiver) = mpsc::channel(10);
-        self.request_sender
-            .send((username.clone(), sender))
-            .unwrap();
-        match tokio::time::timeout(time::Duration::from_secs(60), receiver.recv()).await {
-            Ok(a) => {
-                return Ok(a.unwrap());
-            }
-            Err(_) => {
-                self.stop_request_sender.send(username).unwrap();
-                return Err("timeout".to_string());
-            }
-        }
+    pub async fn get_chat_id(&mut self, username: String) -> Option<ChatId> {
+        self.username_lookup_service.lookup_username(username).await
     }
     pub fn load(serialized: String) -> Self {
         let config: TelegramConfig = serde_json::from_str(&serialized).unwrap();
         let raw_bot = Bot::new(config.token);
         let bot = raw_bot.clone().auto_send();
-        let (request_sender, mut request_receiver) = channel(10);
-        let (stop_request_sender, mut stop_request_receiver) = channel(10);
+        TelegramService {
+            bot: bot,
+            username_lookup_service: Arc::new(UsernameLookupService::new(raw_bot)),
+        }
+    
+ 
+    }
+    pub const ID: &'static str = "telegram";
+}
+#[derive(Debug, Clone)]
+pub struct UsernameLookupService {
+    //bot: AutoSend<Bot>,
+    username_lookup_table: Arc<Mutex<HashMap<String, mpsc::Sender<ChatId>>>>,
+    stop_sender: Sender<()>,
+}
+
+impl UsernameLookupService {
+    pub fn new(bot: Bot) -> Self {
+        let u: Arc<Mutex<HashMap<String, mpsc::Sender<ChatId>>>> =
+            Arc::new(Mutex::new(HashMap::new()));
+        let username_lookups = Arc::clone(&u);
         let (stop_sender, mut stop_receiver) = channel(10);
-        //let update_bot = bot.clone();
-        //start a thread to handle username lookups
         tokio::spawn(async move {
             let mut offset = 0;
-            let mut username_lookups: HashMap<String, mpsc::Sender<ChatId>> = HashMap::new();
             let mut interval = tokio::time::interval(time::Duration::from_secs(3));
             loop {
                 select! {
-                    req=request_receiver.recv() => {
-                        match req{
-                            Ok((username, sender))=>{
-                                username_lookups.insert(username, sender);
-                            }
-                            Err(e)=>print!("Error receiving username lookup request: {}", e)
-                        }
-                      },
-                      _=interval.tick()=>{
-                        if username_lookups.len()==0{
+                    _=interval.tick()=>{
+                        if username_lookups.lock().unwrap().len() == 0 {
                             continue;
                         }
                         //check for messages here
-                        let updates=requests::JsonRequest::new(raw_bot.clone(),payloads::GetUpdates::new().offset(offset)).send().await.unwrap();
-                        //let updates = update_bot.get_updates().await.unwrap();
+                        let updates = requests::JsonRequest::new(
+                            bot.clone(),
+                            payloads::GetUpdates::new().offset(offset),
+                        )
+                        .send()
+                        .await
+                        .unwrap();
                         for update in updates.iter() {
-                            offset+=1;
+                            offset += 1;
                             let chat = update.chat().unwrap();
                             let username = chat.username().unwrap();
-                            match username_lookups
-                                .get(&username.to_string())
-                            {
-                                Some(sender) => {
-                                    println!("Found user: {}", chat.id);
-                                    sender.send(chat.id).await.unwrap();
-                                    username_lookups.remove(&username.to_string());
+                            let c={
+                                if let Some(sender) =
+                                    username_lookups.lock().unwrap().get(&username.to_string())
+                                {
+                                    Some(sender.clone())
+                                } else {
+                                    None
                                 }
-                                None => {}
+                            };
+                            if let Some(sender) = c {
+                                sender.send(chat.id).await.unwrap();
+                                username_lookups
+                                    .lock()
+                                    .unwrap()
+                                    .remove(&username.to_string());
                             }
                         }
-
-                    },
-                    username=stop_request_receiver.recv()=>{
-                        let username = username.unwrap();
-                        username_lookups.remove(&username);
-                    },
+                    }
                     _=stop_receiver.recv() => {
                         println!("Stopping username lookup thread");
                         return ;
@@ -113,19 +117,25 @@ impl TelegramService {
                 }
             }
         });
-        TelegramService {
-            bot: bot,
-            request_sender: request_sender,
-            stop_request_sender: stop_request_sender,
+        UsernameLookupService {
+            username_lookup_table: u,
             stop_sender: stop_sender,
         }
     }
-    pub const ID: &'static str="telegram";
+    pub async fn lookup_username(&self, username: String) -> Option<ChatId> {
+        let (sender, mut receiver) = mpsc::channel(10);
+        self.username_lookup_table
+            .lock()
+            .unwrap()
+            .insert(username, sender);
+        receiver.recv().await
+    }
 }
-impl Drop for TelegramService {
+
+impl Drop for UsernameLookupService {
     fn drop(&mut self) {
-        if let Err(e)=self.stop_sender.send(()){
-            print!("{}",e)
+        if let Err(e) = self.stop_sender.send(()) {
+            print!("{}", e)
         }
     }
 }

@@ -5,9 +5,6 @@ use crate::{
 use axum::{http::StatusCode, response::IntoResponse, routing::post, Extension, Json, Router};
 use axum_macros::debug_handler;
 use serde::Deserialize;
-pub struct Server {
-    config: Config,
-}
 #[derive(Debug, Deserialize)]
 struct SendNotificationBody {
     user_id: String,
@@ -93,9 +90,9 @@ async fn handle_add_telegram_channel(
     Json(payload): Json<AddTelegramChannelBody>,
     Extension(config): Extension<Config>,
 ) -> impl IntoResponse {
-    if let Some(telegram_svc) = config.telegram.clone() {
+    if let Some(mut telegram_svc) = config.telegram.clone() {
         match telegram_svc.get_chat_id(payload.telegram_username).await {
-            Ok(chat_id) => {
+            Some(chat_id) => {
                 add_channel(
                     config,
                     payload.user_id,
@@ -106,8 +103,7 @@ async fn handle_add_telegram_channel(
                 .unwrap();
                 return (StatusCode::OK, Json(true));
             }
-            Err(e) => {
-                println!("{:?}", e);
+            None => {
                 return (StatusCode::INTERNAL_SERVER_ERROR, Json(false));
             }
         }
