@@ -1,4 +1,4 @@
-use config::{ConfigError, File};
+use config::File;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres;
 use std::io::Error;
@@ -45,6 +45,7 @@ impl ConfigFile {
             Err(e) => Err(e),
         }
     }
+    /// Load from all files named "config.*" in the current working directory and the root directory as well as environment variables prefixed with "NOTIFIER"
     pub fn load_from_std_locations() -> Self {
         config::Config::builder()
             .add_source(File::with_name("config").required(false))
