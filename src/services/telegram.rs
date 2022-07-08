@@ -1,5 +1,4 @@
 use std::{
-    cell::RefCell,
     collections::HashMap,
     sync::{Arc, Mutex},
     time,
@@ -24,7 +23,7 @@ pub struct TelegramService {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct TelegramConfig {
+pub struct TelegramConfig {
     token: String,
 }
 #[async_trait]
@@ -45,16 +44,14 @@ impl TelegramService {
     pub async fn get_chat_id(&mut self, username: String) -> Option<ChatId> {
         self.username_lookup_service.lookup_username(username).await
     }
-    pub fn load(serialized: String) -> Self {
-        let config: TelegramConfig = serde_json::from_str(&serialized).unwrap();
+    pub fn load(config: TelegramConfig) -> Self {
+        //let config: TelegramConfig = serde_json::from_str(&serialized).unwrap();
         let raw_bot = Bot::new(config.token);
         let bot = raw_bot.clone().auto_send();
         TelegramService {
             bot: bot,
             username_lookup_service: Arc::new(UsernameLookupService::new(raw_bot)),
         }
-    
- 
     }
     pub const ID: &'static str = "telegram";
 }
@@ -92,16 +89,10 @@ impl UsernameLookupService {
                             offset += 1;
                             let chat = update.chat().unwrap();
                             let username = chat.username().unwrap();
-                            let c={
-                                if let Some(sender) =
-                                    username_lookups.lock().unwrap().get(&username.to_string())
-                                {
-                                    Some(sender.clone())
-                                } else {
-                                    None
-                                }
-                            };
-                            if let Some(sender) = c {
+                            let o=username_lookups.lock().unwrap().get(&username.to_string()).map(|s| s.clone());
+                            if let Some(sender) =
+                                o
+                            {
                                 sender.send(chat.id).await.unwrap();
                                 username_lookups
                                     .lock()
@@ -110,6 +101,7 @@ impl UsernameLookupService {
                             }
                         }
                     }
+
                     _=stop_receiver.recv() => {
                         println!("Stopping username lookup thread");
                         return ;

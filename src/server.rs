@@ -1,5 +1,5 @@
 use crate::{
-    config::Config,
+    config::ServerConfig,
     services::{email::EmailService, telegram::TelegramService},
 };
 use axum::{http::StatusCode, response::IntoResponse, routing::post, Extension, Json, Router};
@@ -14,7 +14,7 @@ struct SendNotificationBody {
 #[debug_handler]
 async fn handle_send_notification(
     Json(payload): Json<SendNotificationBody>,
-    Extension(state): Extension<Config>,
+    Extension(state): Extension<ServerConfig>,
 ) -> impl IntoResponse {
     let channels = sqlx::query!("SELECT * from channels WHERE user_id= $1;", payload.user_id)
         .fetch_all(&state.pool)
@@ -40,7 +40,7 @@ async fn handle_send_notification(
 }
 
 async fn add_channel(
-    config: Config,
+    config: ServerConfig,
     user_id: String,
     service_id: String,
     service_username: String,
@@ -56,6 +56,28 @@ async fn add_channel(
     .unwrap();
     Ok(())
 }
+
+#[derive(Debug, Deserialize)]
+struct RemoveChannelBody {
+    user_id: String,
+    service_id: String,
+}
+
+#[debug_handler]
+async fn remove_channel(
+    Extension(config): Extension<ServerConfig>,
+    Json(payload): Json<RemoveChannelBody>,
+) -> Result<(), String> {
+    sqlx::query!(
+        "DELETE FROM channels WHERE user_id= $1 AND service_id= $2",
+        payload.user_id,
+        payload.service_id
+    )
+    .execute(&config.pool)
+    .await
+    .unwrap();
+    Ok(())
+}
 #[derive(Deserialize)]
 struct AddEmailChannelBody {
     user_id: String,
@@ -65,7 +87,7 @@ struct AddEmailChannelBody {
 #[debug_handler]
 async fn handle_add_email_channel(
     Json(payload): Json<AddEmailChannelBody>,
-    Extension(config): Extension<Config>,
+    Extension(config): Extension<ServerConfig>,
 ) -> impl IntoResponse {
     match add_channel(
         config,
@@ -76,7 +98,7 @@ async fn handle_add_email_channel(
     .await
     {
         Ok(_) => (StatusCode::OK, Json(true)),
-        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(false)),
+        Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, Json(false)),
     }
 }
 
@@ -88,7 +110,7 @@ struct AddTelegramChannelBody {
 
 async fn handle_add_telegram_channel(
     Json(payload): Json<AddTelegramChannelBody>,
-    Extension(config): Extension<Config>,
+    Extension(config): Extension<ServerConfig>,
 ) -> impl IntoResponse {
     if let Some(mut telegram_svc) = config.telegram.clone() {
         match telegram_svc.get_chat_id(payload.telegram_username).await {
@@ -111,11 +133,12 @@ async fn handle_add_telegram_channel(
     (StatusCode::INTERNAL_SERVER_ERROR, Json(false))
 }
 
-pub fn create_router(config: Config) -> Router {
+pub fn create_router(config: ServerConfig) -> Router {
     let app = Router::new()
         .route("/notify", post(handle_send_notification))
         .route("/add_email_channel", post(handle_add_email_channel))
         .route("/add_telegram_channel", post(handle_add_telegram_channel))
+        .route("/remove_channel", post(remove_channel))
         .layer(Extension(config));
     app
 }

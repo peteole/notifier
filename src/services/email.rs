@@ -31,8 +31,8 @@ impl Service for EmailService {
     }
 }
 impl EmailService {
-    pub fn load(serialized: String) -> Self {
-        let config: EmailConfig = serde_json::from_str(&serialized).unwrap();
+    pub fn load(config: EmailConfig) -> Self {
+        //let config: EmailConfig = serde_json::from_str(&serialized).unwrap();
         let credentials = Credentials::new(config.username, config.password);
         let client = lettre::SmtpTransport::relay(config.smtp_relay.as_str())
             .unwrap()
@@ -43,5 +43,5 @@ impl EmailService {
             sender: config.sender,
         }
     }
-    pub const ID: &'static str="email";
+    pub const ID: &'static str = "email";
 }
