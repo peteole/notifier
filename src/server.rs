@@ -5,12 +5,25 @@ use crate::{
 use axum::{http::StatusCode, response::IntoResponse, routing::post, Extension, Json, Router};
 use axum_macros::debug_handler;
 use serde::Deserialize;
-#[derive(Debug, Deserialize)]
+use utoipa::{Component, OpenApi};
+#[derive(Debug, Deserialize, Component)]
 struct SendNotificationBody {
     user_id: String,
     subject: String,
     message: String,
 }
+
+/// Send notification
+///
+/// send notification to user with given id on all channels registered for that user
+#[utoipa::path(
+        post,
+        path = "/notify",
+        responses(
+            (status = 200, description = "Notification sent successfully")
+        ),
+        request_body = SendNotificationBody
+    )]
 #[debug_handler]
 async fn handle_send_notification(
     Json(payload): Json<SendNotificationBody>,
@@ -57,12 +70,23 @@ async fn add_channel(
     Ok(())
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Component)]
 struct RemoveChannelBody {
     user_id: String,
     service_id: String,
 }
 
+/// Remove channel
+///
+/// Remove notification channel for user
+#[utoipa::path(
+    post,
+    path = "/remove_channel",
+    responses(
+        (status = 200, description = "Channel removed successfully")
+    ),
+    request_body = RemoveChannelBody
+)]
 #[debug_handler]
 async fn remove_channel(
     Extension(config): Extension<ServerConfig>,
@@ -78,12 +102,23 @@ async fn remove_channel(
     .unwrap();
     Ok(())
 }
-#[derive(Deserialize)]
+#[derive(Deserialize, Component)]
 struct AddEmailChannelBody {
     user_id: String,
     email: String,
 }
 
+/// Add email channel
+///
+/// Add email notification channel for user
+#[utoipa::path(
+    post,
+    path = "/add_channel/email",
+    responses(
+        (status = 200, description = "Channel added successfully")
+    ),
+    request_body = AddEmailChannelBody
+)]
 #[debug_handler]
 async fn handle_add_email_channel(
     Json(payload): Json<AddEmailChannelBody>,
@@ -102,12 +137,23 @@ async fn handle_add_email_channel(
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Component)]
 struct AddTelegramChannelBody {
     user_id: String,
     telegram_username: String,
 }
 
+/// Add telegram channel
+///
+/// Add telegram notification channel for user
+#[utoipa::path(
+    post,
+    path = "/add_channel/telegram",
+    responses(
+        (status = 200, description = "Channel added successfully")
+    ),
+    request_body = AddTelegramChannelBody
+)]
 async fn handle_add_telegram_channel(
     Json(payload): Json<AddTelegramChannelBody>,
     Extension(config): Extension<ServerConfig>,
@@ -136,9 +182,20 @@ async fn handle_add_telegram_channel(
 pub fn create_router(config: ServerConfig) -> Router {
     let app = Router::new()
         .route("/notify", post(handle_send_notification))
-        .route("/add_email_channel", post(handle_add_email_channel))
-        .route("/add_telegram_channel", post(handle_add_telegram_channel))
+        .route("/add_channel/email", post(handle_add_email_channel))
+        .route("/add_channel/telegram", post(handle_add_telegram_channel))
         .route("/remove_channel", post(remove_channel))
         .layer(Extension(config));
     app
 }
+
+#[derive(OpenApi)]
+#[openapi(
+    handlers(
+        handle_send_notification,
+        handle_add_email_channel,
+        handle_add_telegram_channel,
+    ),
+    components(AddTelegramChannelBody, AddEmailChannelBody, RemoveChannelBody, SendNotificationBody),
+)]
+pub struct ApiDoc;

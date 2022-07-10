@@ -1,0 +1,163 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "notifier",
+    "description": "",
+    "contact": {
+      "name": "",
+      "email": ""
+    },
+    "license": {
+      "name": ""
+    },
+    "version": "0.2.1"
+  },
+  "paths": {
+    "/add_channel/email": {
+      "post": {
+        "tags": [
+          "crate"
+        ],
+        "summary": "Add email channel",
+        "description": "Add email channel\n\nAdd email notification channel for user\n",
+        "operationId": "handle_add_email_channel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEmailChannelBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Channel added successfully"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/add_channel/telegram": {
+      "post": {
+        "tags": [
+          "crate"
+        ],
+        "summary": "Add telegram channel",
+        "description": "Add telegram channel\n\nAdd telegram notification channel for user\n",
+        "operationId": "handle_add_telegram_channel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTelegramChannelBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Channel added successfully"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/notify": {
+      "post": {
+        "tags": [
+          "crate"
+        ],
+        "summary": "Send notification",
+        "description": "Send notification\n\nsend notification to user with given id on all channels registered for that user\n",
+        "operationId": "handle_send_notification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendNotificationBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Notification sent successfully"
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddTelegramChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "telegram_username"
+        ],
+        "properties": {
+          "telegram_username": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "SendNotificationBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "subject",
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      },
+      "AddEmailChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "RemoveChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "service_id"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string"
+          },
+          "service_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

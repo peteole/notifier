@@ -1,0 +1,10 @@
+.openapi-generator-ignore
+apis/CrateApi.ts
+apis/index.ts
+index.ts
+models/AddEmailChannelBody.ts
+models/AddTelegramChannelBody.ts
+models/RemoveChannelBody.ts
+models/SendNotificationBody.ts
+models/index.ts
+runtime.ts

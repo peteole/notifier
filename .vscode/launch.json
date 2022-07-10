@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'notifier'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=notifier",
+                    "--package=notifier"
+                ],
+                "filter": {
+                    "name": "notifier",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "NOTIFIER.CONNECTION_STRING":"postgresql://postgres:devpasswd@localhost"
+            }
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'notifier'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=notifier",
+                    "--package=notifier"
+                ],
+                "filter": {
+                    "name": "notifier",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

@@ -53,7 +53,8 @@ impl ConfigFile {
             .add_source(
                 config::Environment::with_prefix("NOTIFIER")
                     .try_parsing(true)
-                    .separator("_"),
+                    .separator(".")
+                    .prefix_separator("."),
             )
             .build()
             .unwrap()

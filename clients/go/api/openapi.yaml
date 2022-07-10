@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: ""
+    name: ""
+  description: ""
+  license:
+    name: ""
+  title: notifier
+  version: 0.2.1
+servers:
+- url: /
+paths:
+  /add_channel/email:
+    post:
+      deprecated: false
+      description: |
+        Add email channel
+
+        Add email notification channel for user
+      operationId: handle_add_email_channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddEmailChannelBody'
+        required: true
+      responses:
+        "200":
+          description: Channel added successfully
+      summary: Add email channel
+      tags:
+      - crate
+  /add_channel/telegram:
+    post:
+      deprecated: false
+      description: |
+        Add telegram channel
+
+        Add telegram notification channel for user
+      operationId: handle_add_telegram_channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTelegramChannelBody'
+        required: true
+      responses:
+        "200":
+          description: Channel added successfully
+      summary: Add telegram channel
+      tags:
+      - crate
+  /notify:
+    post:
+      deprecated: false
+      description: |
+        Send notification
+
+        send notification to user with given id on all channels registered for that user
+      operationId: handle_send_notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendNotificationBody'
+        required: true
+      responses:
+        "200":
+          description: Notification sent successfully
+      summary: Send notification
+      tags:
+      - crate
+components:
+  schemas:
+    AddTelegramChannelBody:
+      example:
+        telegram_username: telegram_username
+        user_id: user_id
+      properties:
+        telegram_username:
+          type: string
+        user_id:
+          type: string
+      required:
+      - telegram_username
+      - user_id
+      type: object
+    SendNotificationBody:
+      example:
+        user_id: user_id
+        subject: subject
+        message: message
+      properties:
+        message:
+          type: string
+        user_id:
+          type: string
+        subject:
+          type: string
+      required:
+      - message
+      - subject
+      - user_id
+      type: object
+    AddEmailChannelBody:
+      example:
+        user_id: user_id
+        email: email
+      properties:
+        email:
+          type: string
+        user_id:
+          type: string
+      required:
+      - email
+      - user_id
+      type: object
+    RemoveChannelBody:
+      properties:
+        user_id:
+          type: string
+        service_id:
+          type: string
+      required:
+      - service_id
+      - user_id
+      type: object
