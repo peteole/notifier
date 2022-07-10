@@ -39,6 +39,7 @@ fn main() {
                 "peteole".into(),
                 "--git-repo-id".into(),
                 "notifier".into(),
+                format!("--additional-properties=packageVersion={},packageName=clients/{},isGoSubmodule=true",env!("CARGO_PKG_VERSION"),language).into(),
                 "-g".into(),
                 language.to_string(),
                 "-o".into(),

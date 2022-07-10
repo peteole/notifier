@@ -20,8 +20,8 @@ Add email channel  Add email notification channel for user
 ### Example
 ```kotlin
 // Import classes:
-//import org.openapitools.client.infrastructure.*
-//import org.openapitools.client.models.*
+//import clients/kotlin.infrastructure.*
+//import clients/kotlin.models.*
 
 val apiInstance = CrateApi()
 val addEmailChannelBody : AddEmailChannelBody =  // AddEmailChannelBody | 
@@ -66,8 +66,8 @@ Add telegram channel  Add telegram notification channel for user
 ### Example
 ```kotlin
 // Import classes:
-//import org.openapitools.client.infrastructure.*
-//import org.openapitools.client.models.*
+//import clients/kotlin.infrastructure.*
+//import clients/kotlin.models.*
 
 val apiInstance = CrateApi()
 val addTelegramChannelBody : AddTelegramChannelBody =  // AddTelegramChannelBody | 
@@ -112,8 +112,8 @@ Send notification  send notification to user with given id on all channels regis
 ### Example
 ```kotlin
 // Import classes:
-//import org.openapitools.client.infrastructure.*
-//import org.openapitools.client.models.*
+//import clients/kotlin.infrastructure.*
+//import clients/kotlin.models.*
 
 val apiInstance = CrateApi()
 val sendNotificationBody : SendNotificationBody =  // SendNotificationBody | 

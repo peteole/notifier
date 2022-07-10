@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Subject** | **string** |  | 
-**Message** | **string** |  | 
 **UserId** | **string** |  | 
+**Message** | **string** |  | 
 
 ## Methods
 
 ### NewSendNotificationBody
 
-`func NewSendNotificationBody(subject string, message string, userId string, ) *SendNotificationBody`
+`func NewSendNotificationBody(subject string, userId string, message string, ) *SendNotificationBody`
 
 NewSendNotificationBody instantiates a new SendNotificationBody object
 This constructor will assign default values to properties that have it defined,
@@ -47,26 +47,6 @@ and a boolean to check if the value has been set.
 SetSubject sets Subject field to given value.
 
 
-### GetMessage
-
-`func (o *SendNotificationBody) GetMessage() string`
-
-GetMessage returns the Message field if non-nil, zero value otherwise.
-
-### GetMessageOk
-
-`func (o *SendNotificationBody) GetMessageOk() (*string, bool)`
-
-GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMessage
-
-`func (o *SendNotificationBody) SetMessage(v string)`
-
-SetMessage sets Message field to given value.
-
-
 ### GetUserId
 
 `func (o *SendNotificationBody) GetUserId() string`
@@ -85,6 +65,26 @@ and a boolean to check if the value has been set.
 `func (o *SendNotificationBody) SetUserId(v string)`
 
 SetUserId sets UserId field to given value.
+
+
+### GetMessage
+
+`func (o *SendNotificationBody) GetMessage() string`
+
+GetMessage returns the Message field if non-nil, zero value otherwise.
+
+### GetMessageOk
+
+`func (o *SendNotificationBody) GetMessageOk() (*string, bool)`
+
+GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMessage
+
+`func (o *SendNotificationBody) SetMessage(v string)`
+
+SetMessage sets Message field to given value.
 
 
 

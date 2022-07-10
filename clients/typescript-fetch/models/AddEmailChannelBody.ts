@@ -24,13 +24,13 @@ export interface AddEmailChannelBody {
      * @type {string}
      * @memberof AddEmailChannelBody
      */
-    email: string;
+    userId: string;
     /**
      * 
      * @type {string}
      * @memberof AddEmailChannelBody
      */
-    userId: string;
+    email: string;
 }
 
 /**
@@ -38,8 +38,8 @@ export interface AddEmailChannelBody {
  */
 export function instanceOfAddEmailChannelBody(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "email" in value;
     isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "email" in value;
 
     return isInstance;
 }
@@ -54,8 +54,8 @@ export function AddEmailChannelBodyFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'email': json['email'],
         'userId': json['user_id'],
+        'email': json['email'],
     };
 }
 
@@ -68,8 +68,8 @@ export function AddEmailChannelBodyToJSON(value?: AddEmailChannelBody | null): a
     }
     return {
         
-        'email': value.email,
         'user_id': value.userId,
+        'email': value.email,
     };
 }
 

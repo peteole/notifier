@@ -82,8 +82,8 @@ class AddTelegramChannelBody(ModelNormal):
                 and the value is attribute type.
         """
         return {
-            'telegram_username': (str,),  # noqa: E501
             'user_id': (str,),  # noqa: E501
+            'telegram_username': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -92,8 +92,8 @@ class AddTelegramChannelBody(ModelNormal):
 
 
     attribute_map = {
-        'telegram_username': 'telegram_username',  # noqa: E501
         'user_id': 'user_id',  # noqa: E501
+        'telegram_username': 'telegram_username',  # noqa: E501
     }
 
     read_only_vars = {
@@ -103,12 +103,12 @@ class AddTelegramChannelBody(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, telegram_username, user_id, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, user_id, telegram_username, *args, **kwargs):  # noqa: E501
         """AddTelegramChannelBody - a model defined in OpenAPI
 
         Args:
-            telegram_username (str):
             user_id (str):
+            telegram_username (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -172,8 +172,8 @@ class AddTelegramChannelBody(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
-        self.telegram_username = telegram_username
         self.user_id = user_id
+        self.telegram_username = telegram_username
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -194,12 +194,12 @@ class AddTelegramChannelBody(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, telegram_username, user_id, *args, **kwargs):  # noqa: E501
+    def __init__(self, user_id, telegram_username, *args, **kwargs):  # noqa: E501
         """AddTelegramChannelBody - a model defined in OpenAPI
 
         Args:
-            telegram_username (str):
             user_id (str):
+            telegram_username (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -261,8 +261,8 @@ class AddTelegramChannelBody(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
-        self.telegram_username = telegram_username
         self.user_id = user_id
+        self.telegram_username = telegram_username
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

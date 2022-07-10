@@ -26,21 +26,21 @@ import com.squareup.moshi.Json
 /**
  * 
  *
+ * @param userId 
  * @param subject 
  * @param message 
- * @param userId 
  */
 
 data class SendNotificationBody (
+
+    @Json(name = "user_id")
+    val userId: kotlin.String,
 
     @Json(name = "subject")
     val subject: kotlin.String,
 
     @Json(name = "message")
-    val message: kotlin.String,
-
-    @Json(name = "user_id")
-    val userId: kotlin.String
+    val message: kotlin.String
 
 )
 

@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **subject** | **kotlin.String** |  | 
-**message** | **kotlin.String** |  | 
 **userId** | **kotlin.String** |  | 
+**message** | **kotlin.String** |  | 
 
 
 

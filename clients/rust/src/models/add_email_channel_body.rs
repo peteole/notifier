@@ -13,17 +13,17 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AddEmailChannelBody {
-    #[serde(rename = "email")]
-    pub email: String,
     #[serde(rename = "user_id")]
     pub user_id: String,
+    #[serde(rename = "email")]
+    pub email: String,
 }
 
 impl AddEmailChannelBody {
-    pub fn new(email: String, user_id: String) -> AddEmailChannelBody {
+    pub fn new(user_id: String, email: String) -> AddEmailChannelBody {
         AddEmailChannelBody {
-            email,
             user_id,
+            email,
         }
     }
 }

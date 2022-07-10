@@ -1,4 +1,4 @@
-# org.openapitools.client - Kotlin client library for notifier
+# clients/kotlin - Kotlin client library for notifier
 
 ## Requires
 
@@ -43,10 +43,10 @@ Class | Method | HTTP request | Description
 <a name="documentation-for-models"></a>
 ## Documentation for Models
 
- - [org.openapitools.client.models.AddEmailChannelBody](docs/AddEmailChannelBody.md)
- - [org.openapitools.client.models.AddTelegramChannelBody](docs/AddTelegramChannelBody.md)
- - [org.openapitools.client.models.RemoveChannelBody](docs/RemoveChannelBody.md)
- - [org.openapitools.client.models.SendNotificationBody](docs/SendNotificationBody.md)
+ - [clients/kotlin.models.AddEmailChannelBody](docs/AddEmailChannelBody.md)
+ - [clients/kotlin.models.AddTelegramChannelBody](docs/AddTelegramChannelBody.md)
+ - [clients/kotlin.models.RemoveChannelBody](docs/RemoveChannelBody.md)
+ - [clients/kotlin.models.SendNotificationBody](docs/SendNotificationBody.md)
 
 
 <a name="documentation-for-authorization"></a>

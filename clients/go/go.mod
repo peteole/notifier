@@ -1,4 +1,4 @@
-module github.com/peteole/notifier
+module github.com/peteole/notifier/clients/go
 
 go 1.13
 

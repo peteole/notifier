@@ -13,17 +13,17 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AddTelegramChannelBody {
-    #[serde(rename = "telegram_username")]
-    pub telegram_username: String,
     #[serde(rename = "user_id")]
     pub user_id: String,
+    #[serde(rename = "telegram_username")]
+    pub telegram_username: String,
 }
 
 impl AddTelegramChannelBody {
-    pub fn new(telegram_username: String, user_id: String) -> AddTelegramChannelBody {
+    pub fn new(user_id: String, telegram_username: String) -> AddTelegramChannelBody {
         AddTelegramChannelBody {
-            telegram_username,
             user_id,
+            telegram_username,
         }
     }
 }

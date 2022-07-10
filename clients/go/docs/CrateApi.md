@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-    addEmailChannelBody := *openapiclient.NewAddEmailChannelBody("Email_example", "UserId_example") // AddEmailChannelBody | 
+    addEmailChannelBody := *openapiclient.NewAddEmailChannelBody("UserId_example", "Email_example") // AddEmailChannelBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -95,7 +95,7 @@ import (
 )
 
 func main() {
-    addTelegramChannelBody := *openapiclient.NewAddTelegramChannelBody("TelegramUsername_example", "UserId_example") // AddTelegramChannelBody | 
+    addTelegramChannelBody := *openapiclient.NewAddTelegramChannelBody("UserId_example", "TelegramUsername_example") // AddTelegramChannelBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -159,7 +159,7 @@ import (
 )
 
 func main() {
-    sendNotificationBody := *openapiclient.NewSendNotificationBody("Subject_example", "Message_example", "UserId_example") // SendNotificationBody | 
+    sendNotificationBody := *openapiclient.NewSendNotificationBody("Subject_example", "UserId_example", "Message_example") // SendNotificationBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)

@@ -82,9 +82,9 @@ class SendNotificationBody(ModelNormal):
                 and the value is attribute type.
         """
         return {
+            'user_id': (str,),  # noqa: E501
             'subject': (str,),  # noqa: E501
             'message': (str,),  # noqa: E501
-            'user_id': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -93,9 +93,9 @@ class SendNotificationBody(ModelNormal):
 
 
     attribute_map = {
+        'user_id': 'user_id',  # noqa: E501
         'subject': 'subject',  # noqa: E501
         'message': 'message',  # noqa: E501
-        'user_id': 'user_id',  # noqa: E501
     }
 
     read_only_vars = {
@@ -105,13 +105,13 @@ class SendNotificationBody(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, subject, message, user_id, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, user_id, subject, message, *args, **kwargs):  # noqa: E501
         """SendNotificationBody - a model defined in OpenAPI
 
         Args:
+            user_id (str):
             subject (str):
             message (str):
-            user_id (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -175,9 +175,9 @@ class SendNotificationBody(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.user_id = user_id
         self.subject = subject
         self.message = message
-        self.user_id = user_id
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -198,13 +198,13 @@ class SendNotificationBody(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, subject, message, user_id, *args, **kwargs):  # noqa: E501
+    def __init__(self, user_id, subject, message, *args, **kwargs):  # noqa: E501
         """SendNotificationBody - a model defined in OpenAPI
 
         Args:
+            user_id (str):
             subject (str):
             message (str):
-            user_id (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -266,9 +266,9 @@ class SendNotificationBody(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.user_id = user_id
         self.subject = subject
         self.message = message
-        self.user_id = user_id
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

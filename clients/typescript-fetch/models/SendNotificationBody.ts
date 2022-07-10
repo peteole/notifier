@@ -30,13 +30,13 @@ export interface SendNotificationBody {
      * @type {string}
      * @memberof SendNotificationBody
      */
-    message: string;
+    userId: string;
     /**
      * 
      * @type {string}
      * @memberof SendNotificationBody
      */
-    userId: string;
+    message: string;
 }
 
 /**
@@ -45,8 +45,8 @@ export interface SendNotificationBody {
 export function instanceOfSendNotificationBody(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "subject" in value;
-    isInstance = isInstance && "message" in value;
     isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "message" in value;
 
     return isInstance;
 }
@@ -62,8 +62,8 @@ export function SendNotificationBodyFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'subject': json['subject'],
-        'message': json['message'],
         'userId': json['user_id'],
+        'message': json['message'],
     };
 }
 
@@ -77,8 +77,8 @@ export function SendNotificationBodyToJSON(value?: SendNotificationBody | null):
     return {
         
         'subject': value.subject,
-        'message': value.message,
         'user_id': value.userId,
+        'message': value.message,
     };
 }
 

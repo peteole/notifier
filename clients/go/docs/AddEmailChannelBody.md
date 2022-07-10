@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Email** | **string** |  | 
 **UserId** | **string** |  | 
+**Email** | **string** |  | 
 
 ## Methods
 
 ### NewAddEmailChannelBody
 
-`func NewAddEmailChannelBody(email string, userId string, ) *AddEmailChannelBody`
+`func NewAddEmailChannelBody(userId string, email string, ) *AddEmailChannelBody`
 
 NewAddEmailChannelBody instantiates a new AddEmailChannelBody object
 This constructor will assign default values to properties that have it defined,
@@ -25,26 +25,6 @@ will change when the set of required properties is changed
 NewAddEmailChannelBodyWithDefaults instantiates a new AddEmailChannelBody object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetEmail
-
-`func (o *AddEmailChannelBody) GetEmail() string`
-
-GetEmail returns the Email field if non-nil, zero value otherwise.
-
-### GetEmailOk
-
-`func (o *AddEmailChannelBody) GetEmailOk() (*string, bool)`
-
-GetEmailOk returns a tuple with the Email field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetEmail
-
-`func (o *AddEmailChannelBody) SetEmail(v string)`
-
-SetEmail sets Email field to given value.
-
 
 ### GetUserId
 
@@ -64,6 +44,26 @@ and a boolean to check if the value has been set.
 `func (o *AddEmailChannelBody) SetUserId(v string)`
 
 SetUserId sets UserId field to given value.
+
+
+### GetEmail
+
+`func (o *AddEmailChannelBody) GetEmail() string`
+
+GetEmail returns the Email field if non-nil, zero value otherwise.
+
+### GetEmailOk
+
+`func (o *AddEmailChannelBody) GetEmailOk() (*string, bool)`
+
+GetEmailOk returns a tuple with the Email field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEmail
+
+`func (o *AddEmailChannelBody) SetEmail(v string)`
+
+SetEmail sets Email field to given value.
 
 
 

@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**TelegramUsername** | **string** |  | 
 **UserId** | **string** |  | 
+**TelegramUsername** | **string** |  | 
 
 ## Methods
 
 ### NewAddTelegramChannelBody
 
-`func NewAddTelegramChannelBody(telegramUsername string, userId string, ) *AddTelegramChannelBody`
+`func NewAddTelegramChannelBody(userId string, telegramUsername string, ) *AddTelegramChannelBody`
 
 NewAddTelegramChannelBody instantiates a new AddTelegramChannelBody object
 This constructor will assign default values to properties that have it defined,
@@ -25,26 +25,6 @@ will change when the set of required properties is changed
 NewAddTelegramChannelBodyWithDefaults instantiates a new AddTelegramChannelBody object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetTelegramUsername
-
-`func (o *AddTelegramChannelBody) GetTelegramUsername() string`
-
-GetTelegramUsername returns the TelegramUsername field if non-nil, zero value otherwise.
-
-### GetTelegramUsernameOk
-
-`func (o *AddTelegramChannelBody) GetTelegramUsernameOk() (*string, bool)`
-
-GetTelegramUsernameOk returns a tuple with the TelegramUsername field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTelegramUsername
-
-`func (o *AddTelegramChannelBody) SetTelegramUsername(v string)`
-
-SetTelegramUsername sets TelegramUsername field to given value.
-
 
 ### GetUserId
 
@@ -64,6 +44,26 @@ and a boolean to check if the value has been set.
 `func (o *AddTelegramChannelBody) SetUserId(v string)`
 
 SetUserId sets UserId field to given value.
+
+
+### GetTelegramUsername
+
+`func (o *AddTelegramChannelBody) GetTelegramUsername() string`
+
+GetTelegramUsername returns the TelegramUsername field if non-nil, zero value otherwise.
+
+### GetTelegramUsernameOk
+
+`func (o *AddTelegramChannelBody) GetTelegramUsernameOk() (*string, bool)`
+
+GetTelegramUsernameOk returns a tuple with the TelegramUsername field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTelegramUsername
+
+`func (o *AddTelegramChannelBody) SetTelegramUsername(v string)`
+
+SetTelegramUsername sets TelegramUsername field to given value.
 
 
 

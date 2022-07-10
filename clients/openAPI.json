@@ -101,29 +101,10 @@
           "telegram_username"
         ],
         "properties": {
+          "user_id": {
+            "type": "string"
+          },
           "telegram_username": {
-            "type": "string"
-          },
-          "user_id": {
-            "type": "string"
-          }
-        }
-      },
-      "SendNotificationBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "subject",
-          "message"
-        ],
-        "properties": {
-          "subject": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "user_id": {
             "type": "string"
           }
         }
@@ -143,6 +124,25 @@
           }
         }
       },
+      "SendNotificationBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "subject",
+          "message"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "AddEmailChannelBody": {
         "type": "object",
         "required": [
@@ -150,10 +150,10 @@
           "email"
         ],
         "properties": {
-          "email": {
+          "user_id": {
             "type": "string"
           },
-          "user_id": {
+          "email": {
             "type": "string"
           }
         }
