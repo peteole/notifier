@@ -92,15 +92,25 @@ components:
         subject: subject
         message: message
       properties:
+        subject:
+          type: string
         message:
           type: string
         user_id:
           type: string
-        subject:
-          type: string
       required:
       - message
       - subject
+      - user_id
+      type: object
+    RemoveChannelBody:
+      properties:
+        service_id:
+          type: string
+        user_id:
+          type: string
+      required:
+      - service_id
       - user_id
       type: object
     AddEmailChannelBody:
@@ -114,15 +124,5 @@ components:
           type: string
       required:
       - email
-      - user_id
-      type: object
-    RemoveChannelBody:
-      properties:
-        user_id:
-          type: string
-        service_id:
-          type: string
-      required:
-      - service_id
       - user_id
       type: object

@@ -117,13 +117,28 @@
           "message"
         ],
         "properties": {
+          "subject": {
+            "type": "string"
+          },
           "message": {
             "type": "string"
           },
           "user_id": {
             "type": "string"
+          }
+        }
+      },
+      "RemoveChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "service_id"
+        ],
+        "properties": {
+          "service_id": {
+            "type": "string"
           },
-          "subject": {
+          "user_id": {
             "type": "string"
           }
         }
@@ -139,21 +154,6 @@
             "type": "string"
           },
           "user_id": {
-            "type": "string"
-          }
-        }
-      },
-      "RemoveChannelBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "service_id"
-        ],
-        "properties": {
-          "user_id": {
-            "type": "string"
-          },
-          "service_id": {
             "type": "string"
           }
         }

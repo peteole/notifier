@@ -159,7 +159,7 @@ import (
 )
 
 func main() {
-    sendNotificationBody := *openapiclient.NewSendNotificationBody("Message_example", "UserId_example", "Subject_example") // SendNotificationBody | 
+    sendNotificationBody := *openapiclient.NewSendNotificationBody("Subject_example", "Message_example", "UserId_example") // SendNotificationBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)

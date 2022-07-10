@@ -26,17 +26,17 @@ import com.squareup.moshi.Json
 /**
  * 
  *
- * @param userId 
  * @param serviceId 
+ * @param userId 
  */
 
 data class RemoveChannelBody (
 
-    @Json(name = "user_id")
-    val userId: kotlin.String,
-
     @Json(name = "service_id")
-    val serviceId: kotlin.String
+    val serviceId: kotlin.String,
+
+    @Json(name = "user_id")
+    val userId: kotlin.String
 
 )
 

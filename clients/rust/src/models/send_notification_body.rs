@@ -13,20 +13,20 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SendNotificationBody {
+    #[serde(rename = "subject")]
+    pub subject: String,
     #[serde(rename = "message")]
     pub message: String,
     #[serde(rename = "user_id")]
     pub user_id: String,
-    #[serde(rename = "subject")]
-    pub subject: String,
 }
 
 impl SendNotificationBody {
-    pub fn new(message: String, user_id: String, subject: String) -> SendNotificationBody {
+    pub fn new(subject: String, message: String, user_id: String) -> SendNotificationBody {
         SendNotificationBody {
+            subject,
             message,
             user_id,
-            subject,
         }
     }
 }

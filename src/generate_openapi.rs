@@ -3,8 +3,7 @@ mod server;
 mod services;
 use std::env;
 use std::fs;
-use testcontainers::{self, Container};
-use tokio::sync::futures;
+
 use utoipa::OpenApi;
 
 const languages: &[&str] = &["rust", "go", "kotlin", "typescript-fetch", "python"];
@@ -36,12 +35,16 @@ fn main() {
                 "generate".to_string(),
                 "-i".into(),
                 "/local/openAPI.json".into(),
+                "--git-user-id".into(),
+                "peteole".into(),
+                "--git-repo-id".into(),
+                "notifier".into(),
                 "-g".into(),
                 language.to_string(),
                 "-o".into(),
-                format!("/local/{}", language)
+                format!("/local/{}", language),
             ],
         ));
-        let container = client.run(run_image);
+        let _container = client.run(run_image);
     }
 }

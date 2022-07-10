@@ -17,20 +17,20 @@ import (
 
 // SendNotificationBody struct for SendNotificationBody
 type SendNotificationBody struct {
+	Subject string `json:"subject"`
 	Message string `json:"message"`
 	UserId string `json:"user_id"`
-	Subject string `json:"subject"`
 }
 
 // NewSendNotificationBody instantiates a new SendNotificationBody object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSendNotificationBody(message string, userId string, subject string) *SendNotificationBody {
+func NewSendNotificationBody(subject string, message string, userId string) *SendNotificationBody {
 	this := SendNotificationBody{}
+	this.Subject = subject
 	this.Message = message
 	this.UserId = userId
-	this.Subject = subject
 	return &this
 }
 
@@ -40,6 +40,30 @@ func NewSendNotificationBody(message string, userId string, subject string) *Sen
 func NewSendNotificationBodyWithDefaults() *SendNotificationBody {
 	this := SendNotificationBody{}
 	return &this
+}
+
+// GetSubject returns the Subject field value
+func (o *SendNotificationBody) GetSubject() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Subject
+}
+
+// GetSubjectOk returns a tuple with the Subject field value
+// and a boolean to check if the value has been set.
+func (o *SendNotificationBody) GetSubjectOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Subject, true
+}
+
+// SetSubject sets field value
+func (o *SendNotificationBody) SetSubject(v string) {
+	o.Subject = v
 }
 
 // GetMessage returns the Message field value
@@ -90,40 +114,16 @@ func (o *SendNotificationBody) SetUserId(v string) {
 	o.UserId = v
 }
 
-// GetSubject returns the Subject field value
-func (o *SendNotificationBody) GetSubject() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Subject
-}
-
-// GetSubjectOk returns a tuple with the Subject field value
-// and a boolean to check if the value has been set.
-func (o *SendNotificationBody) GetSubjectOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Subject, true
-}
-
-// SetSubject sets field value
-func (o *SendNotificationBody) SetSubject(v string) {
-	o.Subject = v
-}
-
 func (o SendNotificationBody) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
+	if true {
+		toSerialize["subject"] = o.Subject
+	}
 	if true {
 		toSerialize["message"] = o.Message
 	}
 	if true {
 		toSerialize["user_id"] = o.UserId
-	}
-	if true {
-		toSerialize["subject"] = o.Subject
 	}
 	return json.Marshal(toSerialize)
 }

@@ -13,17 +13,17 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RemoveChannelBody {
-    #[serde(rename = "user_id")]
-    pub user_id: String,
     #[serde(rename = "service_id")]
     pub service_id: String,
+    #[serde(rename = "user_id")]
+    pub user_id: String,
 }
 
 impl RemoveChannelBody {
-    pub fn new(user_id: String, service_id: String) -> RemoveChannelBody {
+    pub fn new(service_id: String, user_id: String) -> RemoveChannelBody {
         RemoveChannelBody {
-            user_id,
             service_id,
+            user_id,
         }
     }
 }

@@ -24,13 +24,13 @@ export interface RemoveChannelBody {
      * @type {string}
      * @memberof RemoveChannelBody
      */
-    userId: string;
+    serviceId: string;
     /**
      * 
      * @type {string}
      * @memberof RemoveChannelBody
      */
-    serviceId: string;
+    userId: string;
 }
 
 /**
@@ -38,8 +38,8 @@ export interface RemoveChannelBody {
  */
 export function instanceOfRemoveChannelBody(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "serviceId" in value;
+    isInstance = isInstance && "userId" in value;
 
     return isInstance;
 }
@@ -54,8 +54,8 @@ export function RemoveChannelBodyFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'userId': json['user_id'],
         'serviceId': json['service_id'],
+        'userId': json['user_id'],
     };
 }
 
@@ -68,8 +68,8 @@ export function RemoveChannelBodyToJSON(value?: RemoveChannelBody | null): any {
     }
     return {
         
-        'user_id': value.userId,
         'service_id': value.serviceId,
+        'user_id': value.userId,
     };
 }
 

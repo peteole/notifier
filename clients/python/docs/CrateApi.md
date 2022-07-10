@@ -175,9 +175,9 @@ with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     send_notification_body = SendNotificationBody(
+        subject="subject_example",
         message="message_example",
         user_id="user_id_example",
-        subject="subject_example",
     ) # SendNotificationBody | 
 
     # example passing only required values which don't have defaults set

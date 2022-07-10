@@ -82,8 +82,8 @@ class RemoveChannelBody(ModelNormal):
                 and the value is attribute type.
         """
         return {
-            'user_id': (str,),  # noqa: E501
             'service_id': (str,),  # noqa: E501
+            'user_id': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -92,8 +92,8 @@ class RemoveChannelBody(ModelNormal):
 
 
     attribute_map = {
-        'user_id': 'user_id',  # noqa: E501
         'service_id': 'service_id',  # noqa: E501
+        'user_id': 'user_id',  # noqa: E501
     }
 
     read_only_vars = {
@@ -103,12 +103,12 @@ class RemoveChannelBody(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, user_id, service_id, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, service_id, user_id, *args, **kwargs):  # noqa: E501
         """RemoveChannelBody - a model defined in OpenAPI
 
         Args:
-            user_id (str):
             service_id (str):
+            user_id (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -172,8 +172,8 @@ class RemoveChannelBody(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
-        self.user_id = user_id
         self.service_id = service_id
+        self.user_id = user_id
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -194,12 +194,12 @@ class RemoveChannelBody(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, user_id, service_id, *args, **kwargs):  # noqa: E501
+    def __init__(self, service_id, user_id, *args, **kwargs):  # noqa: E501
         """RemoveChannelBody - a model defined in OpenAPI
 
         Args:
-            user_id (str):
             service_id (str):
+            user_id (str):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -261,8 +261,8 @@ class RemoveChannelBody(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
-        self.user_id = user_id
         self.service_id = service_id
+        self.user_id = user_id
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
