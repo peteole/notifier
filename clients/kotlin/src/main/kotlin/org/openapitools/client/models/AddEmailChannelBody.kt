@@ -26,17 +26,17 @@ import com.squareup.moshi.Json
 /**
  * 
  *
- * @param email 
  * @param userId 
+ * @param email 
  */
 
 data class AddEmailChannelBody (
 
-    @Json(name = "email")
-    val email: kotlin.String,
-
     @Json(name = "user_id")
-    val userId: kotlin.String
+    val userId: kotlin.String,
+
+    @Json(name = "email")
+    val email: kotlin.String
 
 )
 

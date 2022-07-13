@@ -11,7 +11,7 @@
 
 from setuptools import setup, find_packages  # noqa: H301
 
-NAME = "clients/python"
+NAME = "openapi-client"
 VERSION = "0.2.1"
 # To install the library, run the following
 #

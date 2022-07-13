@@ -26,17 +26,17 @@ import com.squareup.moshi.Json
 /**
  * 
  *
- * @param userId 
  * @param telegramUsername 
+ * @param userId 
  */
 
 data class AddTelegramChannelBody (
 
-    @Json(name = "user_id")
-    val userId: kotlin.String,
-
     @Json(name = "telegram_username")
-    val telegramUsername: kotlin.String
+    val telegramUsername: kotlin.String,
+
+    @Json(name = "user_id")
+    val userId: kotlin.String
 
 )
 

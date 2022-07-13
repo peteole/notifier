@@ -94,21 +94,6 @@
   },
   "components": {
     "schemas": {
-      "AddTelegramChannelBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "telegram_username"
-        ],
-        "properties": {
-          "user_id": {
-            "type": "string"
-          },
-          "telegram_username": {
-            "type": "string"
-          }
-        }
-      },
       "RemoveChannelBody": {
         "type": "object",
         "required": [
@@ -120,6 +105,36 @@
             "type": "string"
           },
           "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "AddEmailChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "AddTelegramChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "telegram_username"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string"
+          },
+          "telegram_username": {
             "type": "string"
           }
         }
@@ -139,21 +154,6 @@
             "type": "string"
           },
           "message": {
-            "type": "string"
-          }
-        }
-      },
-      "AddEmailChannelBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "email"
-        ],
-        "properties": {
-          "user_id": {
-            "type": "string"
-          },
-          "email": {
             "type": "string"
           }
         }

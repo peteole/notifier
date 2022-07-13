@@ -1,4 +1,4 @@
-# clients/python.CrateApi
+# openapi_client.CrateApi
 
 All URIs are relative to *http://localhost*
 
@@ -21,31 +21,31 @@ Add email channel  Add email notification channel for user
 
 ```python
 import time
-import clients/python
-from clients/python.api import crate_api
-from clients/python.model.add_email_channel_body import AddEmailChannelBody
+import openapi_client
+from openapi_client.api import crate_api
+from openapi_client.model.add_email_channel_body import AddEmailChannelBody
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = clients/python.Configuration(
+configuration = openapi_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with clients/python.ApiClient() as api_client:
+with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     add_email_channel_body = AddEmailChannelBody(
-        user_id="user_id_example",
         email="email_example",
+        user_id="user_id_example",
     ) # AddEmailChannelBody | 
 
     # example passing only required values which don't have defaults set
     try:
         # Add email channel
         api_instance.handle_add_email_channel(add_email_channel_body)
-    except clients/python.ApiException as e:
+    except openapi_client.ApiException as e:
         print("Exception when calling CrateApi->handle_add_email_channel: %s\n" % e)
 ```
 
@@ -90,19 +90,19 @@ Add telegram channel  Add telegram notification channel for user
 
 ```python
 import time
-import clients/python
-from clients/python.api import crate_api
-from clients/python.model.add_telegram_channel_body import AddTelegramChannelBody
+import openapi_client
+from openapi_client.api import crate_api
+from openapi_client.model.add_telegram_channel_body import AddTelegramChannelBody
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = clients/python.Configuration(
+configuration = openapi_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with clients/python.ApiClient() as api_client:
+with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     add_telegram_channel_body = AddTelegramChannelBody(
@@ -114,7 +114,7 @@ with clients/python.ApiClient() as api_client:
     try:
         # Add telegram channel
         api_instance.handle_add_telegram_channel(add_telegram_channel_body)
-    except clients/python.ApiException as e:
+    except openapi_client.ApiException as e:
         print("Exception when calling CrateApi->handle_add_telegram_channel: %s\n" % e)
 ```
 
@@ -159,19 +159,19 @@ Send notification  send notification to user with given id on all channels regis
 
 ```python
 import time
-import clients/python
-from clients/python.api import crate_api
-from clients/python.model.send_notification_body import SendNotificationBody
+import openapi_client
+from openapi_client.api import crate_api
+from openapi_client.model.send_notification_body import SendNotificationBody
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
-configuration = clients/python.Configuration(
+configuration = openapi_client.Configuration(
     host = "http://localhost"
 )
 
 
 # Enter a context with an instance of the API client
-with clients/python.ApiClient() as api_client:
+with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     send_notification_body = SendNotificationBody(
@@ -184,7 +184,7 @@ with clients/python.ApiClient() as api_client:
     try:
         # Send notification
         api_instance.handle_send_notification(send_notification_body)
-    except clients/python.ApiException as e:
+    except openapi_client.ApiException as e:
         print("Exception when calling CrateApi->handle_send_notification: %s\n" % e)
 ```
 

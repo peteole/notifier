@@ -24,13 +24,13 @@ export interface AddTelegramChannelBody {
      * @type {string}
      * @memberof AddTelegramChannelBody
      */
-    userId: string;
+    telegramUsername: string;
     /**
      * 
      * @type {string}
      * @memberof AddTelegramChannelBody
      */
-    telegramUsername: string;
+    userId: string;
 }
 
 /**
@@ -38,8 +38,8 @@ export interface AddTelegramChannelBody {
  */
 export function instanceOfAddTelegramChannelBody(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "telegramUsername" in value;
+    isInstance = isInstance && "userId" in value;
 
     return isInstance;
 }
@@ -54,8 +54,8 @@ export function AddTelegramChannelBodyFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'userId': json['user_id'],
         'telegramUsername': json['telegram_username'],
+        'userId': json['user_id'],
     };
 }
 
@@ -68,8 +68,8 @@ export function AddTelegramChannelBodyToJSON(value?: AddTelegramChannelBody | nu
     }
     return {
         
-        'user_id': value.userId,
         'telegram_username': value.telegramUsername,
+        'user_id': value.userId,
     };
 }
 

@@ -73,6 +73,29 @@ paths:
       - crate
 components:
   schemas:
+    RemoveChannelBody:
+      properties:
+        service_id:
+          type: string
+        user_id:
+          type: string
+      required:
+      - service_id
+      - user_id
+      type: object
+    AddEmailChannelBody:
+      example:
+        user_id: user_id
+        email: email
+      properties:
+        email:
+          type: string
+        user_id:
+          type: string
+      required:
+      - email
+      - user_id
+      type: object
     AddTelegramChannelBody:
       example:
         telegram_username: telegram_username
@@ -84,16 +107,6 @@ components:
           type: string
       required:
       - telegram_username
-      - user_id
-      type: object
-    RemoveChannelBody:
-      properties:
-        service_id:
-          type: string
-        user_id:
-          type: string
-      required:
-      - service_id
       - user_id
       type: object
     SendNotificationBody:
@@ -111,18 +124,5 @@ components:
       required:
       - message
       - subject
-      - user_id
-      type: object
-    AddEmailChannelBody:
-      example:
-        user_id: user_id
-        email: email
-      properties:
-        user_id:
-          type: string
-        email:
-          type: string
-      required:
-      - email
       - user_id
       type: object

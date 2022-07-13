@@ -6,7 +6,7 @@ use std::fs;
 
 use utoipa::OpenApi;
 
-const languages: &[&str] = &["rust", "go", "kotlin", "typescript-fetch", "python"];
+const languages: &[&str] = &["rust", "go", "java", "python"];
 
 fn main() {
     let docs = server::ApiDoc::openapi().to_pretty_json().unwrap();
@@ -38,8 +38,12 @@ fn main() {
                 "--git-user-id".into(),
                 "peteole".into(),
                 "--git-repo-id".into(),
-                "notifier".into(),
-                format!("--additional-properties=packageVersion={},packageName=clients/{},isGoSubmodule=true",env!("CARGO_PKG_VERSION"),language).into(),
+                format!("notifier-sdk-{}", language).into(),
+                format!(
+                    "--additional-properties=packageVersion={}",
+                    env!("CARGO_PKG_VERSION") //language
+                )
+                .into(),
                 "-g".into(),
                 language.to_string(),
                 "-o".into(),

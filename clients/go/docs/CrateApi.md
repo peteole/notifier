@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-    addEmailChannelBody := *openapiclient.NewAddEmailChannelBody("UserId_example", "Email_example") // AddEmailChannelBody | 
+    addEmailChannelBody := *openapiclient.NewAddEmailChannelBody("Email_example", "UserId_example") // AddEmailChannelBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
