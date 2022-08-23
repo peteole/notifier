@@ -12,21 +12,21 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct SendNotificationBody {
-    #[serde(rename = "subject")]
-    pub subject: String,
+pub struct AddChannelBody {
     #[serde(rename = "user_id")]
     pub user_id: String,
-    #[serde(rename = "message")]
-    pub message: String,
+    #[serde(rename = "service_username")]
+    pub service_username: String,
+    #[serde(rename = "service_id")]
+    pub service_id: String,
 }
 
-impl SendNotificationBody {
-    pub fn new(subject: String, user_id: String, message: String) -> SendNotificationBody {
-        SendNotificationBody {
-            subject,
+impl AddChannelBody {
+    pub fn new(user_id: String, service_username: String, service_id: String) -> AddChannelBody {
+        AddChannelBody {
             user_id,
-            message,
+            service_username,
+            service_id,
         }
     }
 }

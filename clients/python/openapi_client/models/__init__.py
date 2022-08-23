@@ -9,7 +9,7 @@
 # import sys
 # sys.setrecursionlimit(n)
 
-from openapi_client.model.add_email_channel_body import AddEmailChannelBody
-from openapi_client.model.add_telegram_channel_body import AddTelegramChannelBody
+from openapi_client.model.add_channel_body import AddChannelBody
+from openapi_client.model.get_telegram_chat_id_body import GetTelegramChatIdBody
 from openapi_client.model.remove_channel_body import RemoveChannelBody
 from openapi_client.model.send_notification_body import SendNotificationBody

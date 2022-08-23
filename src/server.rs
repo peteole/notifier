@@ -2,7 +2,9 @@ use crate::{
     config::ServerConfig,
     services::{email::EmailService, telegram::TelegramService},
 };
-use axum::{http::StatusCode, response::IntoResponse, routing::post, Extension, Json, Router};
+use axum::{
+    extract::Path, http::StatusCode, response::IntoResponse, routing::post, Extension, Json, Router,
+};
 use axum_macros::debug_handler;
 use serde::Deserialize;
 use utoipa::{Component, OpenApi};
@@ -22,10 +24,10 @@ struct SendNotificationBody {
         responses(
             (status = 200, description = "Notification sent successfully")
         ),
-        request_body = SendNotificationBody
+        request_body=SendNotificationBody
     )]
 #[debug_handler]
-async fn handle_send_notification(
+async fn handle_notify(
     Json(payload): Json<SendNotificationBody>,
     Extension(state): Extension<ServerConfig>,
 ) -> impl IntoResponse {
@@ -52,19 +54,40 @@ async fn handle_send_notification(
     (StatusCode::OK, Json(ok))
 }
 
-async fn add_channel(
-    config: ServerConfig,
+#[derive(Debug, Deserialize, Component)]
+struct AddChannelBody {
+    // The user's id in this service
     user_id: String,
+    // The notification service id, for example "email" or "telegram"
     service_id: String,
+    // The username of the user in the notification service (for example an email address or a telegram chat id)
     service_username: String,
+}
+
+/// Add channel
+///
+/// Remove notification channel for user
+#[utoipa::path(
+    post,
+    path = "/add_channel",
+    responses(
+        (status = 200, description = "Channel added successfully")
+    ),
+    request_body=AddChannelBody
+)]
+#[debug_handler]
+async fn handle_add_channel(
+    Json(payload): Json<AddChannelBody>,
+    Extension(state): Extension<ServerConfig>,
+    Path(channel_id): Path<String>,
 ) -> Result<(), String> {
     sqlx::query!(
         "INSERT INTO channels (user_id,service_id, service_username) VALUES ($1,$2,$3)",
-        user_id,
-        service_id,
-        service_username
+        payload.user_id,
+        payload.service_id,
+        payload.service_username
     )
-    .execute(&config.pool)
+    .execute(&state.pool)
     .await
     .unwrap();
     Ok(())
@@ -85,10 +108,10 @@ struct RemoveChannelBody {
     responses(
         (status = 200, description = "Channel removed successfully")
     ),
-    request_body = RemoveChannelBody
+    request_body=RemoveChannelBody
 )]
 #[debug_handler]
-async fn remove_channel(
+async fn handle_remove_channel(
     Extension(config): Extension<ServerConfig>,
     Json(payload): Json<RemoveChannelBody>,
 ) -> Result<(), String> {
@@ -108,83 +131,52 @@ struct AddEmailChannelBody {
     email: String,
 }
 
-/// Add email channel
-///
-/// Add email notification channel for user
-#[utoipa::path(
-    post,
-    path = "/add_channel/email",
-    responses(
-        (status = 200, description = "Channel added successfully")
-    ),
-    request_body = AddEmailChannelBody
-)]
-#[debug_handler]
-async fn handle_add_email_channel(
-    Json(payload): Json<AddEmailChannelBody>,
-    Extension(config): Extension<ServerConfig>,
-) -> impl IntoResponse {
-    match add_channel(
-        config,
-        payload.user_id,
-        EmailService::ID.to_string(),
-        payload.email,
-    )
-    .await
-    {
-        Ok(_) => (StatusCode::OK, Json(true)),
-        Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, Json(false)),
-    }
-}
-
 #[derive(Deserialize, Component)]
-struct AddTelegramChannelBody {
+struct GetTelegramChatIdBody {
     user_id: String,
     telegram_username: String,
 }
 
-/// Add telegram channel
+/// Get the chat ID of a telegram username
 ///
-/// Add telegram notification channel for user
+/// First call this endpoint, then ask the user to send a message to the bot, then the chat id will be returned
 #[utoipa::path(
     post,
-    path = "/add_channel/telegram",
+    path = "/get_telegram_chat_id",
     responses(
         (status = 200, description = "Channel added successfully")
     ),
-    request_body = AddTelegramChannelBody
+    request_body = GetTelegramChatIdBody
 )]
-async fn handle_add_telegram_channel(
-    Json(payload): Json<AddTelegramChannelBody>,
+async fn handle_get_telegram_chat_id(
+    Json(payload): Json<GetTelegramChatIdBody>,
     Extension(config): Extension<ServerConfig>,
 ) -> impl IntoResponse {
     if let Some(mut telegram_svc) = config.telegram.clone() {
         match telegram_svc.get_chat_id(payload.telegram_username).await {
             Some(chat_id) => {
-                add_channel(
-                    config,
-                    payload.user_id,
-                    TelegramService::ID.to_string(),
-                    chat_id.to_string(),
-                )
-                .await
-                .unwrap();
-                return (StatusCode::OK, Json(true));
+                return (StatusCode::OK, Json(chat_id.to_string()));
             }
             None => {
-                return (StatusCode::INTERNAL_SERVER_ERROR, Json(false));
+                return (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    Json("Error picking up status code".to_string()),
+                );
             }
         }
     }
-    (StatusCode::INTERNAL_SERVER_ERROR, Json(false))
+    (
+        StatusCode::INTERNAL_SERVER_ERROR,
+        Json("Telegram service not configured".to_string()),
+    )
 }
 
 pub fn create_router(config: ServerConfig) -> Router {
     let app = Router::new()
-        .route("/notify", post(handle_send_notification))
-        .route("/add_channel/email", post(handle_add_email_channel))
-        .route("/add_channel/telegram", post(handle_add_telegram_channel))
-        .route("/remove_channel", post(remove_channel))
+        .route("/notify", post(handle_notify))
+        .route("/add_channel", post(handle_add_channel))
+        .route("/get_telegram_chat_id", post(handle_get_telegram_chat_id))
+        .route("/remove_channel", post(handle_remove_channel))
         .layer(Extension(config));
     app
 }
@@ -192,10 +184,16 @@ pub fn create_router(config: ServerConfig) -> Router {
 #[derive(OpenApi)]
 #[openapi(
     handlers(
-        handle_send_notification,
-        handle_add_email_channel,
-        handle_add_telegram_channel,
+        handle_notify,
+        handle_add_channel,
+        handle_remove_channel,
+        handle_get_telegram_chat_id,
     ),
-    components(AddTelegramChannelBody, AddEmailChannelBody, RemoveChannelBody, SendNotificationBody),
+    components(
+        GetTelegramChatIdBody,
+        AddChannelBody,
+        RemoveChannelBody,
+        SendNotificationBody
+    )
 )]
 pub struct ApiDoc;

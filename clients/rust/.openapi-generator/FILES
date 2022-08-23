@@ -2,9 +2,9 @@
 .travis.yml
 Cargo.toml
 README.md
-docs/AddEmailChannelBody.md
-docs/AddTelegramChannelBody.md
+docs/AddChannelBody.md
 docs/CrateApi.md
+docs/GetTelegramChatIdBody.md
 docs/RemoveChannelBody.md
 docs/SendNotificationBody.md
 git_push.sh
@@ -12,8 +12,8 @@ src/apis/configuration.rs
 src/apis/crate_api.rs
 src/apis/mod.rs
 src/lib.rs
-src/models/add_email_channel_body.rs
-src/models/add_telegram_channel_body.rs
+src/models/add_channel_body.rs
+src/models/get_telegram_chat_id_body.rs
 src/models/mod.rs
 src/models/remove_channel_body.rs
 src/models/send_notification_body.rs

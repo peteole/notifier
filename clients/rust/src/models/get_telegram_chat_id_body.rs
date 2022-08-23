@@ -12,21 +12,18 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct SendNotificationBody {
-    #[serde(rename = "subject")]
-    pub subject: String,
+pub struct GetTelegramChatIdBody {
+    #[serde(rename = "telegram_username")]
+    pub telegram_username: String,
     #[serde(rename = "user_id")]
     pub user_id: String,
-    #[serde(rename = "message")]
-    pub message: String,
 }
 
-impl SendNotificationBody {
-    pub fn new(subject: String, user_id: String, message: String) -> SendNotificationBody {
-        SendNotificationBody {
-            subject,
+impl GetTelegramChatIdBody {
+    pub fn new(telegram_username: String, user_id: String) -> GetTelegramChatIdBody {
+        GetTelegramChatIdBody {
+            telegram_username,
             user_id,
-            message,
         }
     }
 }

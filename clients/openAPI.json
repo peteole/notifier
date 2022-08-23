@@ -10,22 +10,22 @@
     "license": {
       "name": ""
     },
-    "version": "0.2.1"
+    "version": "0.2.2"
   },
   "paths": {
-    "/add_channel/email": {
+    "/add_channel": {
       "post": {
         "tags": [
           "crate"
         ],
-        "summary": "Add email channel",
-        "description": "Add email channel\n\nAdd email notification channel for user\n",
-        "operationId": "handle_add_email_channel",
+        "summary": "Add channel",
+        "description": "Add channel\n\nRemove notification channel for user\n",
+        "operationId": "handle_add_channel",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailChannelBody"
+                "$ref": "#/components/schemas/AddChannelBody"
               }
             }
           },
@@ -39,19 +39,19 @@
         "deprecated": false
       }
     },
-    "/add_channel/telegram": {
+    "/get_telegram_chat_id": {
       "post": {
         "tags": [
           "crate"
         ],
-        "summary": "Add telegram channel",
-        "description": "Add telegram channel\n\nAdd telegram notification channel for user\n",
-        "operationId": "handle_add_telegram_channel",
+        "summary": "Get the chat ID of a telegram username",
+        "description": "Get the chat ID of a telegram username\n\nFirst call this endpoint, then ask the user to send a message to the bot, then the chat id will be returned\n",
+        "operationId": "handle_get_telegram_chat_id",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddTelegramChannelBody"
+                "$ref": "#/components/schemas/GetTelegramChatIdBody"
               }
             }
           },
@@ -72,7 +72,7 @@
         ],
         "summary": "Send notification",
         "description": "Send notification\n\nsend notification to user with given id on all channels registered for that user\n",
-        "operationId": "handle_send_notification",
+        "operationId": "handle_notify",
         "requestBody": {
           "content": {
             "application/json": {
@@ -90,6 +90,32 @@
         },
         "deprecated": false
       }
+    },
+    "/remove_channel": {
+      "post": {
+        "tags": [
+          "crate"
+        ],
+        "summary": "Remove channel",
+        "description": "Remove channel\n\nRemove notification channel for user\n",
+        "operationId": "handle_remove_channel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveChannelBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Channel removed successfully"
+          }
+        },
+        "deprecated": false
+      }
     }
   },
   "components": {
@@ -101,40 +127,44 @@
           "service_id"
         ],
         "properties": {
+          "user_id": {
+            "type": "string"
+          },
           "service_id": {
             "type": "string"
-          },
-          "user_id": {
-            "type": "string"
           }
         }
       },
-      "AddEmailChannelBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "email"
-        ],
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "user_id": {
-            "type": "string"
-          }
-        }
-      },
-      "AddTelegramChannelBody": {
+      "GetTelegramChatIdBody": {
         "type": "object",
         "required": [
           "user_id",
           "telegram_username"
         ],
         "properties": {
+          "telegram_username": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "AddChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "service_id",
+          "service_username"
+        ],
+        "properties": {
           "user_id": {
             "type": "string"
           },
-          "telegram_username": {
+          "service_username": {
+            "type": "string"
+          },
+          "service_id": {
             "type": "string"
           }
         }

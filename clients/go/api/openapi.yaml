@@ -7,48 +7,47 @@ info:
   license:
     name: ""
   title: notifier
-  version: 0.2.1
+  version: 0.2.2
 servers:
 - url: /
 paths:
-  /add_channel/email:
+  /add_channel:
     post:
       deprecated: false
       description: |
-        Add email channel
+        Add channel
 
-        Add email notification channel for user
-      operationId: handle_add_email_channel
+        Remove notification channel for user
+      operationId: handle_add_channel
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddEmailChannelBody'
+              $ref: '#/components/schemas/AddChannelBody'
         required: true
       responses:
         "200":
           description: Channel added successfully
-      summary: Add email channel
+      summary: Add channel
       tags:
       - crate
-  /add_channel/telegram:
+  /get_telegram_chat_id:
     post:
       deprecated: false
-      description: |
-        Add telegram channel
-
-        Add telegram notification channel for user
-      operationId: handle_add_telegram_channel
+      description: "Get the chat ID of a telegram username\n\nFirst call this endpoint,\
+        \ then ask the user to send a message to the bot, then the chat id will be\
+        \ returned\n"
+      operationId: handle_get_telegram_chat_id
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddTelegramChannelBody'
+              $ref: '#/components/schemas/GetTelegramChatIdBody'
         required: true
       responses:
         "200":
           description: Channel added successfully
-      summary: Add telegram channel
+      summary: Get the chat ID of a telegram username
       tags:
       - crate
   /notify:
@@ -58,7 +57,7 @@ paths:
         Send notification
 
         send notification to user with given id on all channels registered for that user
-      operationId: handle_send_notification
+      operationId: handle_notify
       requestBody:
         content:
           application/json:
@@ -71,42 +70,69 @@ paths:
       summary: Send notification
       tags:
       - crate
+  /remove_channel:
+    post:
+      deprecated: false
+      description: |
+        Remove channel
+
+        Remove notification channel for user
+      operationId: handle_remove_channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveChannelBody'
+        required: true
+      responses:
+        "200":
+          description: Channel removed successfully
+      summary: Remove channel
+      tags:
+      - crate
 components:
   schemas:
     RemoveChannelBody:
+      example:
+        user_id: user_id
+        service_id: service_id
       properties:
-        service_id:
-          type: string
         user_id:
+          type: string
+        service_id:
           type: string
       required:
       - service_id
       - user_id
       type: object
-    AddEmailChannelBody:
-      example:
-        user_id: user_id
-        email: email
-      properties:
-        email:
-          type: string
-        user_id:
-          type: string
-      required:
-      - email
-      - user_id
-      type: object
-    AddTelegramChannelBody:
+    GetTelegramChatIdBody:
       example:
         telegram_username: telegram_username
         user_id: user_id
       properties:
-        user_id:
-          type: string
         telegram_username:
+          type: string
+        user_id:
           type: string
       required:
       - telegram_username
+      - user_id
+      type: object
+    AddChannelBody:
+      example:
+        user_id: user_id
+        service_username: service_username
+        service_id: service_id
+      properties:
+        user_id:
+          type: string
+        service_username:
+          type: string
+        service_id:
+          type: string
+      required:
+      - service_id
+      - service_username
       - user_id
       type: object
     SendNotificationBody:

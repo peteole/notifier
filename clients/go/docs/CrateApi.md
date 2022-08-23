@@ -4,17 +4,18 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**HandleAddEmailChannel**](CrateApi.md#HandleAddEmailChannel) | **Post** /add_channel/email | Add email channel
-[**HandleAddTelegramChannel**](CrateApi.md#HandleAddTelegramChannel) | **Post** /add_channel/telegram | Add telegram channel
-[**HandleSendNotification**](CrateApi.md#HandleSendNotification) | **Post** /notify | Send notification
+[**HandleAddChannel**](CrateApi.md#HandleAddChannel) | **Post** /add_channel | Add channel
+[**HandleGetTelegramChatId**](CrateApi.md#HandleGetTelegramChatId) | **Post** /get_telegram_chat_id | Get the chat ID of a telegram username
+[**HandleNotify**](CrateApi.md#HandleNotify) | **Post** /notify | Send notification
+[**HandleRemoveChannel**](CrateApi.md#HandleRemoveChannel) | **Post** /remove_channel | Remove channel
 
 
 
-## HandleAddEmailChannel
+## HandleAddChannel
 
-> HandleAddEmailChannel(ctx).AddEmailChannelBody(addEmailChannelBody).Execute()
+> HandleAddChannel(ctx).AddChannelBody(addChannelBody).Execute()
 
-Add email channel
+Add channel
 
 
 
@@ -31,13 +32,13 @@ import (
 )
 
 func main() {
-    addEmailChannelBody := *openapiclient.NewAddEmailChannelBody("Email_example", "UserId_example") // AddEmailChannelBody | 
+    addChannelBody := *openapiclient.NewAddChannelBody("UserId_example", "ServiceUsername_example", "ServiceId_example") // AddChannelBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CrateApi.HandleAddEmailChannel(context.Background()).AddEmailChannelBody(addEmailChannelBody).Execute()
+    resp, r, err := apiClient.CrateApi.HandleAddChannel(context.Background()).AddChannelBody(addChannelBody).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleAddEmailChannel``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleAddChannel``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
 }
@@ -49,12 +50,12 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiHandleAddEmailChannelRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiHandleAddChannelRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **addEmailChannelBody** | [**AddEmailChannelBody**](AddEmailChannelBody.md) |  | 
+ **addChannelBody** | [**AddChannelBody**](AddChannelBody.md) |  | 
 
 ### Return type
 
@@ -74,11 +75,11 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## HandleAddTelegramChannel
+## HandleGetTelegramChatId
 
-> HandleAddTelegramChannel(ctx).AddTelegramChannelBody(addTelegramChannelBody).Execute()
+> HandleGetTelegramChatId(ctx).GetTelegramChatIdBody(getTelegramChatIdBody).Execute()
 
-Add telegram channel
+Get the chat ID of a telegram username
 
 
 
@@ -95,13 +96,13 @@ import (
 )
 
 func main() {
-    addTelegramChannelBody := *openapiclient.NewAddTelegramChannelBody("UserId_example", "TelegramUsername_example") // AddTelegramChannelBody | 
+    getTelegramChatIdBody := *openapiclient.NewGetTelegramChatIdBody("TelegramUsername_example", "UserId_example") // GetTelegramChatIdBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CrateApi.HandleAddTelegramChannel(context.Background()).AddTelegramChannelBody(addTelegramChannelBody).Execute()
+    resp, r, err := apiClient.CrateApi.HandleGetTelegramChatId(context.Background()).GetTelegramChatIdBody(getTelegramChatIdBody).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleAddTelegramChannel``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleGetTelegramChatId``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
 }
@@ -113,12 +114,12 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiHandleAddTelegramChannelRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiHandleGetTelegramChatIdRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **addTelegramChannelBody** | [**AddTelegramChannelBody**](AddTelegramChannelBody.md) |  | 
+ **getTelegramChatIdBody** | [**GetTelegramChatIdBody**](GetTelegramChatIdBody.md) |  | 
 
 ### Return type
 
@@ -138,9 +139,9 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## HandleSendNotification
+## HandleNotify
 
-> HandleSendNotification(ctx).SendNotificationBody(sendNotificationBody).Execute()
+> HandleNotify(ctx).SendNotificationBody(sendNotificationBody).Execute()
 
 Send notification
 
@@ -163,9 +164,9 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CrateApi.HandleSendNotification(context.Background()).SendNotificationBody(sendNotificationBody).Execute()
+    resp, r, err := apiClient.CrateApi.HandleNotify(context.Background()).SendNotificationBody(sendNotificationBody).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleSendNotification``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleNotify``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
 }
@@ -177,12 +178,76 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiHandleSendNotificationRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiHandleNotifyRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **sendNotificationBody** | [**SendNotificationBody**](SendNotificationBody.md) |  | 
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## HandleRemoveChannel
+
+> HandleRemoveChannel(ctx).RemoveChannelBody(removeChannelBody).Execute()
+
+Remove channel
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    removeChannelBody := *openapiclient.NewRemoveChannelBody("UserId_example", "ServiceId_example") // RemoveChannelBody | 
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.CrateApi.HandleRemoveChannel(context.Background()).RemoveChannelBody(removeChannelBody).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleRemoveChannel``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiHandleRemoveChannelRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **removeChannelBody** | [**RemoveChannelBody**](RemoveChannelBody.md) |  | 
 
 ### Return type
 

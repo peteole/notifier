@@ -15,7 +15,7 @@ fn main() {
     let client = testcontainers::clients::Cli::docker();
     let image = testcontainers::images::generic::GenericImage::new(
         "openapitools/openapi-generator-cli",
-        "latest",
+        "v6.0.0",
     )
     .with_volume(
         env::current_dir()

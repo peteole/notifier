@@ -4,17 +4,18 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**handle_add_email_channel**](CrateApi.md#handle_add_email_channel) | **POST** /add_channel/email | Add email channel
-[**handle_add_telegram_channel**](CrateApi.md#handle_add_telegram_channel) | **POST** /add_channel/telegram | Add telegram channel
-[**handle_send_notification**](CrateApi.md#handle_send_notification) | **POST** /notify | Send notification
+[**handle_add_channel**](CrateApi.md#handle_add_channel) | **POST** /add_channel | Add channel
+[**handle_get_telegram_chat_id**](CrateApi.md#handle_get_telegram_chat_id) | **POST** /get_telegram_chat_id | Get the chat ID of a telegram username
+[**handle_notify**](CrateApi.md#handle_notify) | **POST** /notify | Send notification
+[**handle_remove_channel**](CrateApi.md#handle_remove_channel) | **POST** /remove_channel | Remove channel
 
 
-# **handle_add_email_channel**
-> handle_add_email_channel(add_email_channel_body)
+# **handle_add_channel**
+> handle_add_channel(add_channel_body)
 
-Add email channel
+Add channel
 
-Add email channel  Add email notification channel for user 
+Add channel  Remove notification channel for user 
 
 ### Example
 
@@ -23,7 +24,7 @@ Add email channel  Add email notification channel for user
 import time
 import openapi_client
 from openapi_client.api import crate_api
-from openapi_client.model.add_email_channel_body import AddEmailChannelBody
+from openapi_client.model.add_channel_body import AddChannelBody
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
@@ -36,17 +37,18 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
-    add_email_channel_body = AddEmailChannelBody(
-        email="email_example",
+    add_channel_body = AddChannelBody(
         user_id="user_id_example",
-    ) # AddEmailChannelBody | 
+        service_username="service_username_example",
+        service_id="service_id_example",
+    ) # AddChannelBody | 
 
     # example passing only required values which don't have defaults set
     try:
-        # Add email channel
-        api_instance.handle_add_email_channel(add_email_channel_body)
+        # Add channel
+        api_instance.handle_add_channel(add_channel_body)
     except openapi_client.ApiException as e:
-        print("Exception when calling CrateApi->handle_add_email_channel: %s\n" % e)
+        print("Exception when calling CrateApi->handle_add_channel: %s\n" % e)
 ```
 
 
@@ -54,7 +56,7 @@ with openapi_client.ApiClient() as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **add_email_channel_body** | [**AddEmailChannelBody**](AddEmailChannelBody.md)|  |
+ **add_channel_body** | [**AddChannelBody**](AddChannelBody.md)|  |
 
 ### Return type
 
@@ -78,12 +80,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **handle_add_telegram_channel**
-> handle_add_telegram_channel(add_telegram_channel_body)
+# **handle_get_telegram_chat_id**
+> handle_get_telegram_chat_id(get_telegram_chat_id_body)
 
-Add telegram channel
+Get the chat ID of a telegram username
 
-Add telegram channel  Add telegram notification channel for user 
+Get the chat ID of a telegram username  First call this endpoint, then ask the user to send a message to the bot, then the chat id will be returned 
 
 ### Example
 
@@ -92,7 +94,7 @@ Add telegram channel  Add telegram notification channel for user
 import time
 import openapi_client
 from openapi_client.api import crate_api
-from openapi_client.model.add_telegram_channel_body import AddTelegramChannelBody
+from openapi_client.model.get_telegram_chat_id_body import GetTelegramChatIdBody
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
@@ -105,17 +107,17 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
-    add_telegram_channel_body = AddTelegramChannelBody(
-        user_id="user_id_example",
+    get_telegram_chat_id_body = GetTelegramChatIdBody(
         telegram_username="telegram_username_example",
-    ) # AddTelegramChannelBody | 
+        user_id="user_id_example",
+    ) # GetTelegramChatIdBody | 
 
     # example passing only required values which don't have defaults set
     try:
-        # Add telegram channel
-        api_instance.handle_add_telegram_channel(add_telegram_channel_body)
+        # Get the chat ID of a telegram username
+        api_instance.handle_get_telegram_chat_id(get_telegram_chat_id_body)
     except openapi_client.ApiException as e:
-        print("Exception when calling CrateApi->handle_add_telegram_channel: %s\n" % e)
+        print("Exception when calling CrateApi->handle_get_telegram_chat_id: %s\n" % e)
 ```
 
 
@@ -123,7 +125,7 @@ with openapi_client.ApiClient() as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **add_telegram_channel_body** | [**AddTelegramChannelBody**](AddTelegramChannelBody.md)|  |
+ **get_telegram_chat_id_body** | [**GetTelegramChatIdBody**](GetTelegramChatIdBody.md)|  |
 
 ### Return type
 
@@ -147,8 +149,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **handle_send_notification**
-> handle_send_notification(send_notification_body)
+# **handle_notify**
+> handle_notify(send_notification_body)
 
 Send notification
 
@@ -183,9 +185,9 @@ with openapi_client.ApiClient() as api_client:
     # example passing only required values which don't have defaults set
     try:
         # Send notification
-        api_instance.handle_send_notification(send_notification_body)
+        api_instance.handle_notify(send_notification_body)
     except openapi_client.ApiException as e:
-        print("Exception when calling CrateApi->handle_send_notification: %s\n" % e)
+        print("Exception when calling CrateApi->handle_notify: %s\n" % e)
 ```
 
 
@@ -214,6 +216,75 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Notification sent successfully |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **handle_remove_channel**
+> handle_remove_channel(remove_channel_body)
+
+Remove channel
+
+Remove channel  Remove notification channel for user 
+
+### Example
+
+
+```python
+import time
+import openapi_client
+from openapi_client.api import crate_api
+from openapi_client.model.remove_channel_body import RemoveChannelBody
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient() as api_client:
+    # Create an instance of the API class
+    api_instance = crate_api.CrateApi(api_client)
+    remove_channel_body = RemoveChannelBody(
+        user_id="user_id_example",
+        service_id="service_id_example",
+    ) # RemoveChannelBody | 
+
+    # example passing only required values which don't have defaults set
+    try:
+        # Remove channel
+        api_instance.handle_remove_channel(remove_channel_body)
+    except openapi_client.ApiException as e:
+        print("Exception when calling CrateApi->handle_remove_channel: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **remove_channel_body** | [**RemoveChannelBody**](RemoveChannelBody.md)|  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Channel removed successfully |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
