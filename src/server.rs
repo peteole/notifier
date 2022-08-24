@@ -193,19 +193,19 @@ async fn handle_get_telegram_chat_id(
     if let Some(mut telegram_svc) = config.telegram.clone() {
         match telegram_svc.get_chat_id(telegram_username).await {
             Some(chat_id) => {
-                return (StatusCode::OK, Json(chat_id.to_string()));
+                return (StatusCode::OK, chat_id.to_string());
             }
             None => {
                 return (
                     StatusCode::INTERNAL_SERVER_ERROR,
-                    Json("Error picking up status code".to_string()),
+                    "Error picking up status code".to_string(),
                 );
             }
         }
     }
     (
         StatusCode::INTERNAL_SERVER_ERROR,
-        Json("Telegram service not configured".to_string()),
+        "Telegram service not configured".to_string(),
     )
 }
 
