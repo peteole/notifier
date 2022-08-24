@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**HandleAddChannel**](CrateApi.md#HandleAddChannel) | **Post** /add_channel | Add channel
 [**HandleGetChannels**](CrateApi.md#HandleGetChannels) | **Get** /get_channels/{user_id} | Get notification channels for user
-[**HandleGetTelegramChatId**](CrateApi.md#HandleGetTelegramChatId) | **Post** /get_telegram_chat_id | Get the chat ID of a telegram username
+[**HandleGetTelegramChatId**](CrateApi.md#HandleGetTelegramChatId) | **Get** /get_telegram_chat_id/{username} | Get the chat ID of a telegram username
 [**HandleNotify**](CrateApi.md#HandleNotify) | **Post** /notify | Send notification
 [**HandleRemoveChannel**](CrateApi.md#HandleRemoveChannel) | **Post** /remove_channel | Remove channel
 
@@ -33,7 +33,7 @@ import (
 )
 
 func main() {
-    addChannelBody := *openapiclient.NewAddChannelBody("ServiceUsername_example", "UserId_example", "ServiceId_example") // AddChannelBody | 
+    addChannelBody := *openapiclient.NewAddChannelBody("ServiceId_example", "ServiceUsername_example", "UserId_example") // AddChannelBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -148,7 +148,7 @@ No authorization required
 
 ## HandleGetTelegramChatId
 
-> HandleGetTelegramChatId(ctx).GetTelegramChatIdBody(getTelegramChatIdBody).Execute()
+> string HandleGetTelegramChatId(ctx, username).Execute()
 
 Get the chat ID of a telegram username
 
@@ -167,21 +167,27 @@ import (
 )
 
 func main() {
-    getTelegramChatIdBody := *openapiclient.NewGetTelegramChatIdBody("TelegramUsername_example") // GetTelegramChatIdBody | 
+    username := "username_example" // string | User id to get notification channels for
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CrateApi.HandleGetTelegramChatId(context.Background()).GetTelegramChatIdBody(getTelegramChatIdBody).Execute()
+    resp, r, err := apiClient.CrateApi.HandleGetTelegramChatId(context.Background(), username).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CrateApi.HandleGetTelegramChatId``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
+    // response from `HandleGetTelegramChatId`: string
+    fmt.Fprintf(os.Stdout, "Response from `CrateApi.HandleGetTelegramChatId`: %v\n", resp)
 }
 ```
 
 ### Path Parameters
 
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**username** | **string** | User id to get notification channels for | 
 
 ### Other Parameters
 
@@ -190,11 +196,11 @@ Other parameters are passed through a pointer to a apiHandleGetTelegramChatIdReq
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **getTelegramChatIdBody** | [**GetTelegramChatIdBody**](GetTelegramChatIdBody.md) |  | 
+
 
 ### Return type
 
- (empty response body)
+**string**
 
 ### Authorization
 
@@ -202,8 +208,8 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: Not defined
+- **Content-Type**: Not defined
+- **Accept**: text/plain
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -231,7 +237,7 @@ import (
 )
 
 func main() {
-    notifyBody := *openapiclient.NewNotifyBody("Subject_example", "Message_example", "UserId_example") // NotifyBody | 
+    notifyBody := *openapiclient.NewNotifyBody("Message_example", "UserId_example", "Subject_example") // NotifyBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -295,7 +301,7 @@ import (
 )
 
 func main() {
-    removeChannelBody := *openapiclient.NewRemoveChannelBody("ServiceId_example", "UserId_example") // RemoveChannelBody | 
+    removeChannelBody := *openapiclient.NewRemoveChannelBody("UserId_example", "ServiceId_example") // RemoveChannelBody | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)

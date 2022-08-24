@@ -3,7 +3,7 @@ use axum::{
     extract::{self, Path},
     http::StatusCode,
     response::IntoResponse,
-    routing::{post, get},
+    routing::{get, post},
     Extension, Json, Router,
 };
 use axum_macros::debug_handler;
@@ -171,28 +171,27 @@ async fn handle_remove_channel(
     .unwrap();
     Ok(())
 }
-#[derive(Deserialize, Component)]
-struct GetTelegramChatIdBody {
-    telegram_username: String,
-}
 
 /// Get the chat ID of a telegram username
 ///
 /// First call this endpoint, then ask the user to send a message to the bot, then the chat id will be returned
 #[utoipa::path(
-    post,
-    path = "/get_telegram_chat_id",
+    get,
+    path = "/get_telegram_chat_id/{username}",
     responses(
-        (status = 200, description = "Channel added successfully")
+        (status = 200, description = "Returns the chat ID", body=String),
+        (status = 500, description = "Could not look up username")
     ),
-    request_body = GetTelegramChatIdBody
+    params(
+        ("username" = String, path, description = "User id to get notification channels for"),
+    )
 )]
 async fn handle_get_telegram_chat_id(
-    Json(payload): Json<GetTelegramChatIdBody>,
+    extract::Path(telegram_username): extract::Path<String>,
     Extension(config): Extension<ServerConfig>,
 ) -> impl IntoResponse {
     if let Some(mut telegram_svc) = config.telegram.clone() {
-        match telegram_svc.get_chat_id(payload.telegram_username).await {
+        match telegram_svc.get_chat_id(telegram_username).await {
             Some(chat_id) => {
                 return (StatusCode::OK, Json(chat_id.to_string()));
             }
@@ -212,10 +211,13 @@ async fn handle_get_telegram_chat_id(
 
 pub fn create_router(config: ServerConfig) -> Router {
     let app = Router::new()
-        .route("/get_channels/:user_id",get(handle_get_channels))
+        .route("/get_channels/:user_id", get(handle_get_channels))
         .route("/notify", post(handle_notify))
         .route("/add_channel", post(handle_add_channel))
-        .route("/get_telegram_chat_id", post(handle_get_telegram_chat_id))
+        .route(
+            "/get_telegram_chat_id/:username",
+            get(handle_get_telegram_chat_id),
+        )
         .route("/remove_channel", post(handle_remove_channel))
         .layer(Extension(config));
     app
@@ -231,7 +233,6 @@ pub fn create_router(config: ServerConfig) -> Router {
         handle_get_telegram_chat_id,
     ),
     components(
-        GetTelegramChatIdBody,
         AddChannelBody,
         RemoveChannelBody,
         NotifyBody,

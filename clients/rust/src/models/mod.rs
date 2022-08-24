@@ -4,8 +4,6 @@ pub mod channel_response;
 pub use self::channel_response::ChannelResponse;
 pub mod channels_response;
 pub use self::channels_response::ChannelsResponse;
-pub mod get_telegram_chat_id_body;
-pub use self::get_telegram_chat_id_body::GetTelegramChatIdBody;
 pub mod notify_body;
 pub use self::notify_body::NotifyBody;
 pub mod remove_channel_body;

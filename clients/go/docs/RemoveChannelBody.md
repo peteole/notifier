@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ServiceId** | **string** |  | 
 **UserId** | **string** |  | 
+**ServiceId** | **string** |  | 
 
 ## Methods
 
 ### NewRemoveChannelBody
 
-`func NewRemoveChannelBody(serviceId string, userId string, ) *RemoveChannelBody`
+`func NewRemoveChannelBody(userId string, serviceId string, ) *RemoveChannelBody`
 
 NewRemoveChannelBody instantiates a new RemoveChannelBody object
 This constructor will assign default values to properties that have it defined,
@@ -25,26 +25,6 @@ will change when the set of required properties is changed
 NewRemoveChannelBodyWithDefaults instantiates a new RemoveChannelBody object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetServiceId
-
-`func (o *RemoveChannelBody) GetServiceId() string`
-
-GetServiceId returns the ServiceId field if non-nil, zero value otherwise.
-
-### GetServiceIdOk
-
-`func (o *RemoveChannelBody) GetServiceIdOk() (*string, bool)`
-
-GetServiceIdOk returns a tuple with the ServiceId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetServiceId
-
-`func (o *RemoveChannelBody) SetServiceId(v string)`
-
-SetServiceId sets ServiceId field to given value.
-
 
 ### GetUserId
 
@@ -64,6 +44,26 @@ and a boolean to check if the value has been set.
 `func (o *RemoveChannelBody) SetUserId(v string)`
 
 SetUserId sets UserId field to given value.
+
+
+### GetServiceId
+
+`func (o *RemoveChannelBody) GetServiceId() string`
+
+GetServiceId returns the ServiceId field if non-nil, zero value otherwise.
+
+### GetServiceIdOk
+
+`func (o *RemoveChannelBody) GetServiceIdOk() (*string, bool)`
+
+GetServiceIdOk returns a tuple with the ServiceId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetServiceId
+
+`func (o *RemoveChannelBody) SetServiceId(v string)`
+
+SetServiceId sets ServiceId field to given value.
 
 
 

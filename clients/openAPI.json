@@ -10,7 +10,7 @@
     "license": {
       "name": ""
     },
-    "version": "0.3.1"
+    "version": "0.3.2"
   },
   "paths": {
     "/add_channel": {
@@ -74,27 +74,39 @@
         "deprecated": false
       }
     },
-    "/get_telegram_chat_id": {
-      "post": {
+    "/get_telegram_chat_id/{username}": {
+      "get": {
         "tags": [
           "crate"
         ],
         "summary": "Get the chat ID of a telegram username",
         "description": "Get the chat ID of a telegram username\n\nFirst call this endpoint, then ask the user to send a message to the bot, then the chat id will be returned\n",
         "operationId": "handle_get_telegram_chat_id",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetTelegramChatIdBody"
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "User id to get notification channels for",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the chat ID",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Channel added successfully"
+          "500": {
+            "description": "Could not look up username"
           }
         },
         "deprecated": false
@@ -155,21 +167,17 @@
   },
   "components": {
     "schemas": {
-      "NotifyBody": {
+      "RemoveChannelBody": {
         "type": "object",
         "required": [
           "user_id",
-          "subject",
-          "message"
+          "service_id"
         ],
         "properties": {
-          "subject": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
           "user_id": {
+            "type": "string"
+          },
+          "service_id": {
             "type": "string"
           }
         }
@@ -189,6 +197,44 @@
           }
         }
       },
+      "AddChannelBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "service_id",
+          "service_username"
+        ],
+        "properties": {
+          "service_id": {
+            "type": "string"
+          },
+          "service_username": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "NotifyBody": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "subject",
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      },
       "ChannelsResponse": {
         "type": "object",
         "required": [
@@ -201,51 +247,6 @@
             "items": {
               "$ref": "#/components/schemas/ChannelResponse"
             }
-          },
-          "user_id": {
-            "type": "string"
-          }
-        }
-      },
-      "GetTelegramChatIdBody": {
-        "type": "object",
-        "required": [
-          "telegram_username"
-        ],
-        "properties": {
-          "telegram_username": {
-            "type": "string"
-          }
-        }
-      },
-      "AddChannelBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "service_id",
-          "service_username"
-        ],
-        "properties": {
-          "service_username": {
-            "type": "string"
-          },
-          "user_id": {
-            "type": "string"
-          },
-          "service_id": {
-            "type": "string"
-          }
-        }
-      },
-      "RemoveChannelBody": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "service_id"
-        ],
-        "properties": {
-          "service_id": {
-            "type": "string"
           },
           "user_id": {
             "type": "string"

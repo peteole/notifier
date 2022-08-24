@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**handle_add_channel**](CrateApi.md#handle_add_channel) | **POST** /add_channel | Add channel
 [**handle_get_channels**](CrateApi.md#handle_get_channels) | **GET** /get_channels/{user_id} | Get notification channels for user
-[**handle_get_telegram_chat_id**](CrateApi.md#handle_get_telegram_chat_id) | **POST** /get_telegram_chat_id | Get the chat ID of a telegram username
+[**handle_get_telegram_chat_id**](CrateApi.md#handle_get_telegram_chat_id) | **GET** /get_telegram_chat_id/{username} | Get the chat ID of a telegram username
 [**handle_notify**](CrateApi.md#handle_notify) | **POST** /notify | Send notification
 [**handle_remove_channel**](CrateApi.md#handle_remove_channel) | **POST** /remove_channel | Remove channel
 
@@ -74,7 +74,7 @@ No authorization required
 
 ## handle_get_telegram_chat_id
 
-> handle_get_telegram_chat_id(get_telegram_chat_id_body)
+> String handle_get_telegram_chat_id(username)
 Get the chat ID of a telegram username
 
 Get the chat ID of a telegram username  First call this endpoint, then ask the user to send a message to the bot, then the chat id will be returned 
@@ -84,11 +84,11 @@ Get the chat ID of a telegram username  First call this endpoint, then ask the u
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**get_telegram_chat_id_body** | [**GetTelegramChatIdBody**](GetTelegramChatIdBody.md) |  | [required] |
+**username** | **String** | User id to get notification channels for | [required] |
 
 ### Return type
 
- (empty response body)
+**String**
 
 ### Authorization
 
@@ -96,8 +96,8 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: Not defined
+- **Content-Type**: Not defined
+- **Accept**: text/plain
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

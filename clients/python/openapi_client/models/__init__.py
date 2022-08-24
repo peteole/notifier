@@ -12,6 +12,5 @@
 from openapi_client.model.add_channel_body import AddChannelBody
 from openapi_client.model.channel_response import ChannelResponse
 from openapi_client.model.channels_response import ChannelsResponse
-from openapi_client.model.get_telegram_chat_id_body import GetTelegramChatIdBody
 from openapi_client.model.notify_body import NotifyBody
 from openapi_client.model.remove_channel_body import RemoveChannelBody

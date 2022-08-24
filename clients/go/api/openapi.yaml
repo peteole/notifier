@@ -7,7 +7,7 @@ info:
   license:
     name: ""
   title: notifier
-  version: 0.3.1
+  version: 0.3.2
 servers:
 - url: /
 paths:
@@ -59,22 +59,32 @@ paths:
       summary: Get notification channels for user
       tags:
       - crate
-  /get_telegram_chat_id:
-    post:
+  /get_telegram_chat_id/{username}:
+    get:
       deprecated: false
       description: "Get the chat ID of a telegram username\n\nFirst call this endpoint,\
         \ then ask the user to send a message to the bot, then the chat id will be\
         \ returned\n"
       operationId: handle_get_telegram_chat_id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetTelegramChatIdBody'
+      parameters:
+      - deprecated: false
+        description: User id to get notification channels for
+        explode: false
+        in: path
+        name: username
         required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
-          description: Channel added successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Returns the chat ID
+        "500":
+          description: Could not look up username
       summary: Get the chat ID of a telegram username
       tags:
       - crate
@@ -120,21 +130,17 @@ paths:
       - crate
 components:
   schemas:
-    NotifyBody:
+    RemoveChannelBody:
       example:
         user_id: user_id
-        subject: subject
-        message: message
+        service_id: service_id
       properties:
-        subject:
-          type: string
-        message:
-          type: string
         user_id:
           type: string
+        service_id:
+          type: string
       required:
-      - message
-      - subject
+      - service_id
       - user_id
       type: object
     ChannelResponse:
@@ -149,6 +155,40 @@ components:
       required:
       - service_id
       - service_username
+      type: object
+    AddChannelBody:
+      example:
+        user_id: user_id
+        service_username: service_username
+        service_id: service_id
+      properties:
+        service_id:
+          type: string
+        service_username:
+          type: string
+        user_id:
+          type: string
+      required:
+      - service_id
+      - service_username
+      - user_id
+      type: object
+    NotifyBody:
+      example:
+        user_id: user_id
+        subject: subject
+        message: message
+      properties:
+        message:
+          type: string
+        user_id:
+          type: string
+        subject:
+          type: string
+      required:
+      - message
+      - subject
+      - user_id
       type: object
     ChannelsResponse:
       example:
@@ -167,44 +207,5 @@ components:
           type: string
       required:
       - channels
-      - user_id
-      type: object
-    GetTelegramChatIdBody:
-      example:
-        telegram_username: telegram_username
-      properties:
-        telegram_username:
-          type: string
-      required:
-      - telegram_username
-      type: object
-    AddChannelBody:
-      example:
-        user_id: user_id
-        service_username: service_username
-        service_id: service_id
-      properties:
-        service_username:
-          type: string
-        user_id:
-          type: string
-        service_id:
-          type: string
-      required:
-      - service_id
-      - service_username
-      - user_id
-      type: object
-    RemoveChannelBody:
-      example:
-        user_id: user_id
-        service_id: service_id
-      properties:
-        service_id:
-          type: string
-        user_id:
-          type: string
-      required:
-      - service_id
       - user_id
       type: object

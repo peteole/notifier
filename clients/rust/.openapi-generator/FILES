@@ -6,7 +6,6 @@ docs/AddChannelBody.md
 docs/ChannelResponse.md
 docs/ChannelsResponse.md
 docs/CrateApi.md
-docs/GetTelegramChatIdBody.md
 docs/NotifyBody.md
 docs/RemoveChannelBody.md
 git_push.sh
@@ -17,7 +16,6 @@ src/lib.rs
 src/models/add_channel_body.rs
 src/models/channel_response.rs
 src/models/channels_response.rs
-src/models/get_telegram_chat_id_body.rs
 src/models/mod.rs
 src/models/notify_body.rs
 src/models/remove_channel_body.rs

@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**ServiceId** | **string** |  | 
 **ServiceUsername** | **string** |  | 
 **UserId** | **string** |  | 
-**ServiceId** | **string** |  | 
 
 ## Methods
 
 ### NewAddChannelBody
 
-`func NewAddChannelBody(serviceUsername string, userId string, serviceId string, ) *AddChannelBody`
+`func NewAddChannelBody(serviceId string, serviceUsername string, userId string, ) *AddChannelBody`
 
 NewAddChannelBody instantiates a new AddChannelBody object
 This constructor will assign default values to properties that have it defined,
@@ -26,6 +26,26 @@ will change when the set of required properties is changed
 NewAddChannelBodyWithDefaults instantiates a new AddChannelBody object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetServiceId
+
+`func (o *AddChannelBody) GetServiceId() string`
+
+GetServiceId returns the ServiceId field if non-nil, zero value otherwise.
+
+### GetServiceIdOk
+
+`func (o *AddChannelBody) GetServiceIdOk() (*string, bool)`
+
+GetServiceIdOk returns a tuple with the ServiceId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetServiceId
+
+`func (o *AddChannelBody) SetServiceId(v string)`
+
+SetServiceId sets ServiceId field to given value.
+
 
 ### GetServiceUsername
 
@@ -65,26 +85,6 @@ and a boolean to check if the value has been set.
 `func (o *AddChannelBody) SetUserId(v string)`
 
 SetUserId sets UserId field to given value.
-
-
-### GetServiceId
-
-`func (o *AddChannelBody) GetServiceId() string`
-
-GetServiceId returns the ServiceId field if non-nil, zero value otherwise.
-
-### GetServiceIdOk
-
-`func (o *AddChannelBody) GetServiceIdOk() (*string, bool)`
-
-GetServiceIdOk returns a tuple with the ServiceId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetServiceId
-
-`func (o *AddChannelBody) SetServiceId(v string)`
-
-SetServiceId sets ServiceId field to given value.
 
 
 

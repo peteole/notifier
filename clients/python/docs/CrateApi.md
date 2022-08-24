@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**handle_add_channel**](CrateApi.md#handle_add_channel) | **POST** /add_channel | Add channel
 [**handle_get_channels**](CrateApi.md#handle_get_channels) | **GET** /get_channels/{user_id} | Get notification channels for user
-[**handle_get_telegram_chat_id**](CrateApi.md#handle_get_telegram_chat_id) | **POST** /get_telegram_chat_id | Get the chat ID of a telegram username
+[**handle_get_telegram_chat_id**](CrateApi.md#handle_get_telegram_chat_id) | **GET** /get_telegram_chat_id/{username} | Get the chat ID of a telegram username
 [**handle_notify**](CrateApi.md#handle_notify) | **POST** /notify | Send notification
 [**handle_remove_channel**](CrateApi.md#handle_remove_channel) | **POST** /remove_channel | Remove channel
 
@@ -39,9 +39,9 @@ with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     add_channel_body = AddChannelBody(
+        service_id="service_id_example",
         service_username="service_username_example",
         user_id="user_id_example",
-        service_id="service_id_example",
     ) # AddChannelBody | 
 
     # example passing only required values which don't have defaults set
@@ -149,7 +149,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **handle_get_telegram_chat_id**
-> handle_get_telegram_chat_id(get_telegram_chat_id_body)
+> str handle_get_telegram_chat_id(username)
 
 Get the chat ID of a telegram username
 
@@ -162,7 +162,6 @@ Get the chat ID of a telegram username  First call this endpoint, then ask the u
 import time
 import openapi_client
 from openapi_client.api import crate_api
-from openapi_client.model.get_telegram_chat_id_body import GetTelegramChatIdBody
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
@@ -175,14 +174,13 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
-    get_telegram_chat_id_body = GetTelegramChatIdBody(
-        telegram_username="telegram_username_example",
-    ) # GetTelegramChatIdBody | 
+    username = "username_example" # str | User id to get notification channels for
 
     # example passing only required values which don't have defaults set
     try:
         # Get the chat ID of a telegram username
-        api_instance.handle_get_telegram_chat_id(get_telegram_chat_id_body)
+        api_response = api_instance.handle_get_telegram_chat_id(username)
+        pprint(api_response)
     except openapi_client.ApiException as e:
         print("Exception when calling CrateApi->handle_get_telegram_chat_id: %s\n" % e)
 ```
@@ -192,11 +190,11 @@ with openapi_client.ApiClient() as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **get_telegram_chat_id_body** | [**GetTelegramChatIdBody**](GetTelegramChatIdBody.md)|  |
+ **username** | **str**| User id to get notification channels for |
 
 ### Return type
 
-void (empty response body)
+**str**
 
 ### Authorization
 
@@ -204,15 +202,16 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain
 
 
 ### HTTP response details
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | Channel added successfully |  -  |
+**200** | Returns the chat ID |  -  |
+**500** | Could not look up username |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -244,9 +243,9 @@ with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     notify_body = NotifyBody(
-        subject="subject_example",
         message="message_example",
         user_id="user_id_example",
+        subject="subject_example",
     ) # NotifyBody | 
 
     # example passing only required values which don't have defaults set
@@ -314,8 +313,8 @@ with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = crate_api.CrateApi(api_client)
     remove_channel_body = RemoveChannelBody(
-        service_id="service_id_example",
         user_id="user_id_example",
+        service_id="service_id_example",
     ) # RemoveChannelBody | 
 
     # example passing only required values which don't have defaults set
