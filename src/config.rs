@@ -80,21 +80,3 @@ impl ServerConfig {
         return None;
     }
 }
-
-// impl Clone for Config {
-//     fn clone(&self) -> Self {
-//         let mut servicesClone:HashMap<String, Box<dyn Service>>= HashMap::new();
-//         if let Some(telegram) = &self.telegram {
-//             servicesClone.insert(telegram::TelegramService::ID.to_string(), Box::new(telegram.clone()));
-//         }
-//         if let Some(email) = &self.email {
-//             servicesClone.insert(EmailService::ID.to_string(), Box::new(email.clone()));
-//         }
-//         Config {
-//             pool: self.pool.clone(),
-//             telegram: self.telegram.clone(),
-//             email: self.email.clone(),
-//             services: servicesClone,
-//         }
-//     }
-// }

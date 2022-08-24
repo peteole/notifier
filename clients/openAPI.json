@@ -10,7 +10,7 @@
     "license": {
       "name": ""
     },
-    "version": "0.2.2"
+    "version": "0.3.1"
   },
   "paths": {
     "/add_channel": {
@@ -19,7 +19,7 @@
           "crate"
         ],
         "summary": "Add channel",
-        "description": "Add channel\n\nRemove notification channel for user\n",
+        "description": "Add channel\n\nAdd notification channel for user\n",
         "operationId": "handle_add_channel",
         "requestBody": {
           "content": {
@@ -34,6 +34,41 @@
         "responses": {
           "200": {
             "description": "Channel added successfully"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/get_channels/{user_id}": {
+      "get": {
+        "tags": [
+          "crate"
+        ],
+        "summary": "Get notification channels for user",
+        "description": "Get notification channels for user\n\nget all channels registered for user with given id\n",
+        "operationId": "handle_get_channels",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User id to get notification channels for",
+            "required": true,
+            "deprecated": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification channels retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelsResponse"
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -77,7 +112,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SendNotificationBody"
+                "$ref": "#/components/schemas/NotifyBody"
               }
             }
           },
@@ -120,17 +155,54 @@
   },
   "components": {
     "schemas": {
-      "RemoveChannelBody": {
+      "NotifyBody": {
         "type": "object",
         "required": [
           "user_id",
-          "service_id"
+          "subject",
+          "message"
         ],
         "properties": {
-          "user_id": {
+          "subject": {
             "type": "string"
           },
+          "message": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ChannelResponse": {
+        "type": "object",
+        "required": [
+          "service_id",
+          "service_username"
+        ],
+        "properties": {
           "service_id": {
+            "type": "string"
+          },
+          "service_username": {
+            "type": "string"
+          }
+        }
+      },
+      "ChannelsResponse": {
+        "type": "object",
+        "required": [
+          "channels",
+          "user_id"
+        ],
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelResponse"
+            }
+          },
+          "user_id": {
             "type": "string"
           }
         }
@@ -138,14 +210,10 @@
       "GetTelegramChatIdBody": {
         "type": "object",
         "required": [
-          "user_id",
           "telegram_username"
         ],
         "properties": {
           "telegram_username": {
-            "type": "string"
-          },
-          "user_id": {
             "type": "string"
           }
         }
@@ -158,10 +226,10 @@
           "service_username"
         ],
         "properties": {
-          "user_id": {
+          "service_username": {
             "type": "string"
           },
-          "service_username": {
+          "user_id": {
             "type": "string"
           },
           "service_id": {
@@ -169,21 +237,17 @@
           }
         }
       },
-      "SendNotificationBody": {
+      "RemoveChannelBody": {
         "type": "object",
         "required": [
           "user_id",
-          "subject",
-          "message"
+          "service_id"
         ],
         "properties": {
-          "subject": {
+          "service_id": {
             "type": "string"
           },
           "user_id": {
-            "type": "string"
-          },
-          "message": {
             "type": "string"
           }
         }

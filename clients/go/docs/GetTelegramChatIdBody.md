@@ -5,13 +5,12 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **TelegramUsername** | **string** |  | 
-**UserId** | **string** |  | 
 
 ## Methods
 
 ### NewGetTelegramChatIdBody
 
-`func NewGetTelegramChatIdBody(telegramUsername string, userId string, ) *GetTelegramChatIdBody`
+`func NewGetTelegramChatIdBody(telegramUsername string, ) *GetTelegramChatIdBody`
 
 NewGetTelegramChatIdBody instantiates a new GetTelegramChatIdBody object
 This constructor will assign default values to properties that have it defined,
@@ -44,26 +43,6 @@ and a boolean to check if the value has been set.
 `func (o *GetTelegramChatIdBody) SetTelegramUsername(v string)`
 
 SetTelegramUsername sets TelegramUsername field to given value.
-
-
-### GetUserId
-
-`func (o *GetTelegramChatIdBody) GetUserId() string`
-
-GetUserId returns the UserId field if non-nil, zero value otherwise.
-
-### GetUserIdOk
-
-`func (o *GetTelegramChatIdBody) GetUserIdOk() (*string, bool)`
-
-GetUserIdOk returns a tuple with the UserId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetUserId
-
-`func (o *GetTelegramChatIdBody) SetUserId(v string)`
-
-SetUserId sets UserId field to given value.
 
 
 

@@ -7,7 +7,7 @@ info:
   license:
     name: ""
   title: notifier
-  version: 0.2.2
+  version: 0.3.1
 servers:
 - url: /
 paths:
@@ -17,7 +17,7 @@ paths:
       description: |
         Add channel
 
-        Remove notification channel for user
+        Add notification channel for user
       operationId: handle_add_channel
       requestBody:
         content:
@@ -29,6 +29,34 @@ paths:
         "200":
           description: Channel added successfully
       summary: Add channel
+      tags:
+      - crate
+  /get_channels/{user_id}:
+    get:
+      deprecated: false
+      description: |
+        Get notification channels for user
+
+        get all channels registered for user with given id
+      operationId: handle_get_channels
+      parameters:
+      - deprecated: false
+        description: User id to get notification channels for
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelsResponse'
+          description: Notification channels retrieved successfully
+      summary: Get notification channels for user
       tags:
       - crate
   /get_telegram_chat_id:
@@ -62,7 +90,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SendNotificationBody'
+              $ref: '#/components/schemas/NotifyBody'
         required: true
       responses:
         "200":
@@ -92,31 +120,63 @@ paths:
       - crate
 components:
   schemas:
-    RemoveChannelBody:
+    NotifyBody:
       example:
         user_id: user_id
-        service_id: service_id
+        subject: subject
+        message: message
       properties:
+        subject:
+          type: string
+        message:
+          type: string
         user_id:
           type: string
+      required:
+      - message
+      - subject
+      - user_id
+      type: object
+    ChannelResponse:
+      example:
+        service_username: service_username
+        service_id: service_id
+      properties:
         service_id:
+          type: string
+        service_username:
           type: string
       required:
       - service_id
+      - service_username
+      type: object
+    ChannelsResponse:
+      example:
+        channels:
+        - service_username: service_username
+          service_id: service_id
+        - service_username: service_username
+          service_id: service_id
+        user_id: user_id
+      properties:
+        channels:
+          items:
+            $ref: '#/components/schemas/ChannelResponse'
+          type: array
+        user_id:
+          type: string
+      required:
+      - channels
       - user_id
       type: object
     GetTelegramChatIdBody:
       example:
         telegram_username: telegram_username
-        user_id: user_id
       properties:
         telegram_username:
           type: string
-        user_id:
-          type: string
       required:
       - telegram_username
-      - user_id
       type: object
     AddChannelBody:
       example:
@@ -124,9 +184,9 @@ components:
         service_username: service_username
         service_id: service_id
       properties:
-        user_id:
-          type: string
         service_username:
+          type: string
+        user_id:
           type: string
         service_id:
           type: string
@@ -135,20 +195,16 @@ components:
       - service_username
       - user_id
       type: object
-    SendNotificationBody:
+    RemoveChannelBody:
       example:
         user_id: user_id
-        subject: subject
-        message: message
+        service_id: service_id
       properties:
-        subject:
+        service_id:
           type: string
         user_id:
           type: string
-        message:
-          type: string
       required:
-      - message
-      - subject
+      - service_id
       - user_id
       type: object

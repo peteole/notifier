@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**UserId** | **string** |  | 
 **ServiceUsername** | **string** |  | 
+**UserId** | **string** |  | 
 **ServiceId** | **string** |  | 
 
 ## Methods
 
 ### NewAddChannelBody
 
-`func NewAddChannelBody(userId string, serviceUsername string, serviceId string, ) *AddChannelBody`
+`func NewAddChannelBody(serviceUsername string, userId string, serviceId string, ) *AddChannelBody`
 
 NewAddChannelBody instantiates a new AddChannelBody object
 This constructor will assign default values to properties that have it defined,
@@ -26,26 +26,6 @@ will change when the set of required properties is changed
 NewAddChannelBodyWithDefaults instantiates a new AddChannelBody object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetUserId
-
-`func (o *AddChannelBody) GetUserId() string`
-
-GetUserId returns the UserId field if non-nil, zero value otherwise.
-
-### GetUserIdOk
-
-`func (o *AddChannelBody) GetUserIdOk() (*string, bool)`
-
-GetUserIdOk returns a tuple with the UserId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetUserId
-
-`func (o *AddChannelBody) SetUserId(v string)`
-
-SetUserId sets UserId field to given value.
-
 
 ### GetServiceUsername
 
@@ -65,6 +45,26 @@ and a boolean to check if the value has been set.
 `func (o *AddChannelBody) SetServiceUsername(v string)`
 
 SetServiceUsername sets ServiceUsername field to given value.
+
+
+### GetUserId
+
+`func (o *AddChannelBody) GetUserId() string`
+
+GetUserId returns the UserId field if non-nil, zero value otherwise.
+
+### GetUserIdOk
+
+`func (o *AddChannelBody) GetUserIdOk() (*string, bool)`
+
+GetUserIdOk returns a tuple with the UserId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUserId
+
+`func (o *AddChannelBody) SetUserId(v string)`
+
+SetUserId sets UserId field to given value.
 
 
 ### GetServiceId

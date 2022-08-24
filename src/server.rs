@@ -1,15 +1,17 @@
-use crate::{
-    config::ServerConfig,
-    services::{email::EmailService, telegram::TelegramService},
-};
+use crate::config::ServerConfig;
 use axum::{
-    extract::Path, http::StatusCode, response::IntoResponse, routing::post, Extension, Json, Router,
+    extract::{self, Path},
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{post, get},
+    Extension, Json, Router,
 };
 use axum_macros::debug_handler;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
 use utoipa::{Component, OpenApi};
 #[derive(Debug, Deserialize, Component)]
-struct SendNotificationBody {
+struct NotifyBody {
     user_id: String,
     subject: String,
     message: String,
@@ -24,11 +26,11 @@ struct SendNotificationBody {
         responses(
             (status = 200, description = "Notification sent successfully")
         ),
-        request_body=SendNotificationBody
+        request_body=NotifyBody
     )]
 #[debug_handler]
 async fn handle_notify(
-    Json(payload): Json<SendNotificationBody>,
+    Json(payload): Json<NotifyBody>,
     Extension(state): Extension<ServerConfig>,
 ) -> impl IntoResponse {
     let channels = sqlx::query!("SELECT * from channels WHERE user_id= $1;", payload.user_id)
@@ -54,6 +56,51 @@ async fn handle_notify(
     (StatusCode::OK, Json(ok))
 }
 
+#[derive(Debug, Serialize, Component)]
+struct ChannelResponse {
+    service_id: String,
+    service_username: String,
+}
+#[derive(Debug, Serialize, Component)]
+struct ChannelsResponse {
+    channels: Vec<ChannelResponse>,
+    user_id: String,
+}
+/// Get notification channels for user
+///
+/// get all channels registered for user with given id
+#[utoipa::path(
+        get,
+        path = "/get_channels/{user_id}",
+        responses(
+            (status = 200, description = "Notification channels retrieved successfully", body=ChannelsResponse)
+        ),
+        params(
+            ("user_id" = String, path, description = "User id to get notification channels for"),
+        )
+    )]
+#[debug_handler]
+async fn handle_get_channels(
+    extract::Path(user_id): extract::Path<String>,
+    Extension(state): Extension<ServerConfig>,
+) -> Json<ChannelsResponse> {
+    let channels = sqlx::query!("SELECT * from channels WHERE user_id= $1;", user_id)
+        .fetch_all(&state.pool)
+        .await
+        .unwrap();
+    let mapped = ChannelsResponse {
+        channels: channels
+            .iter()
+            .map(|channel| ChannelResponse {
+                service_id: channel.service_id.clone(),
+                service_username: channel.service_username.clone(),
+            })
+            .collect(),
+        user_id: user_id.clone(),
+    };
+    Json(mapped)
+}
+
 #[derive(Debug, Deserialize, Component)]
 struct AddChannelBody {
     // The user's id in this service
@@ -66,7 +113,7 @@ struct AddChannelBody {
 
 /// Add channel
 ///
-/// Remove notification channel for user
+/// Add notification channel for user
 #[utoipa::path(
     post,
     path = "/add_channel",
@@ -79,7 +126,6 @@ struct AddChannelBody {
 async fn handle_add_channel(
     Json(payload): Json<AddChannelBody>,
     Extension(state): Extension<ServerConfig>,
-    Path(channel_id): Path<String>,
 ) -> Result<(), String> {
     sqlx::query!(
         "INSERT INTO channels (user_id,service_id, service_username) VALUES ($1,$2,$3)",
@@ -126,14 +172,7 @@ async fn handle_remove_channel(
     Ok(())
 }
 #[derive(Deserialize, Component)]
-struct AddEmailChannelBody {
-    user_id: String,
-    email: String,
-}
-
-#[derive(Deserialize, Component)]
 struct GetTelegramChatIdBody {
-    user_id: String,
     telegram_username: String,
 }
 
@@ -173,6 +212,7 @@ async fn handle_get_telegram_chat_id(
 
 pub fn create_router(config: ServerConfig) -> Router {
     let app = Router::new()
+        .route("/get_channels/:user_id",get(handle_get_channels))
         .route("/notify", post(handle_notify))
         .route("/add_channel", post(handle_add_channel))
         .route("/get_telegram_chat_id", post(handle_get_telegram_chat_id))
@@ -187,13 +227,16 @@ pub fn create_router(config: ServerConfig) -> Router {
         handle_notify,
         handle_add_channel,
         handle_remove_channel,
+        handle_get_channels,
         handle_get_telegram_chat_id,
     ),
     components(
         GetTelegramChatIdBody,
         AddChannelBody,
         RemoveChannelBody,
-        SendNotificationBody
+        NotifyBody,
+        ChannelsResponse,
+        ChannelResponse,
     )
 )]
 pub struct ApiDoc;
